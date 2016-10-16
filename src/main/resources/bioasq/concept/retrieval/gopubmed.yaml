@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.bioasq.concept.retrieval.GoPubMedConceptRetrievalExecutor
+
+pages: 1
+hits: 100
+conf: /properties/direct-gopubmed-concept.properties # /properties/metal-gopubmed-concept.properties
+timeout: 1 # 4
+limit: 500

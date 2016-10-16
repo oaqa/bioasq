@@ -1,0 +1,6 @@
+inherit: baseqa.providers.ml.classifiers.weka
+
+classifier-name: weka.classifiers.lazy.IBk
+options: []
+
+# add parameters "model-file", "dataset-schema-file"

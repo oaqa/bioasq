@@ -1,0 +1,17 @@
+inherit: baseqa.answer.score.classifier-predict
+
+scorers: |
+  - inherit: baseqa.answer.score.scorers.type-coercion
+  - inherit: baseqa.answer.score.scorers.cao-count
+  - inherit: baseqa.answer.score.scorers.name-count
+  - inherit: baseqa.answer.score.scorers.avg-covered-token-count
+  - inherit: bioqa.answer.score.scorers.stopword-count
+  - inherit: baseqa.answer.score.scorers.token-overlap-count
+  - inherit: baseqa.answer.score.scorers.concept-overlap-count
+  - inherit: bioqa.answer.score.scorers.token-proximity
+  - inherit: bioqa.answer.score.scorers.concept-proximity
+  - inherit: baseqa.answer.score.scorers.focus-overlap-count
+  - inherit: bioqa.answer.score.scorers.parsehead-proximity
+  - inherit: baseqa.answer.score.scorers.answer-type
+  - inherit: baseqa.answer.score.scorers.focus
+  - inherit: baseqa.answer.score.scorers.concept-type

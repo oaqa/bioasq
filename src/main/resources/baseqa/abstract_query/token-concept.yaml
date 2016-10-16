@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.baseqa.abstract_query.TokenConceptAbstractQueryGenerator
+
+stoplist-path: /dictionaries/stoplist.txt
+use-weight: false
+use-type: false
+#pos-tags-path: /dictionaries/pos-tags.txt
+#noun-tags-path: /dictionaries/noun-tags.txt

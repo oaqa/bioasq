@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.bioasq.concept.rerank.scorers.GoPubMedConceptRetrievalScorer
+
+pages: 1
+hits: 100
+conf: /properties/direct-gopubmed-concept.properties
+timeout: 2
+stoplist-path: /dictionaries/stoplist.txt

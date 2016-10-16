@@ -1,0 +1,3 @@
+inherit: baseqa.answer.yesno.scorers.token-overlap
+
+stoplist-path: /dictionaries/stoplist-gene-top5k.txt

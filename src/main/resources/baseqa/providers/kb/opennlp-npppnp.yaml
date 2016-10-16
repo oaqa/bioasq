@@ -1,0 +1,3 @@
+inherit: baseqa.providers.kb.opennlp
+
+type: NP,PP,NP

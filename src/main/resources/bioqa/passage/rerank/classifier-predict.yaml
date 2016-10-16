@@ -1,0 +1,7 @@
+inherit: baseqa.passage.rerank.classifier-predict
+
+scorers: |
+  - inherit: baseqa.passage.rerank.scorers.original-score
+  - inherit: baseqa.passage.rerank.scorers.meta-info
+  - inherit: bioqa.passage.rerank.scorers.lucene
+# add "classifier", "feature-file"

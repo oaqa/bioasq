@@ -1,0 +1,4 @@
+inherit: baseqa.providers.ml.classifiers.weka-reptree
+
+model-file: src/main/resources/models/bioqa/answer_type/4b-dev-weka-reptree-null.model
+dataset-schema-file: src/main/resources/models/bioqa/answer_type/4b-dev-weka-reptree-null.dataset-schema

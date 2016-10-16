@@ -1,0 +1,5 @@
+inherit: baseqa.document.rerank.classifier-predict
+
+scorers: |
+  - inherit: baseqa.document.rerank.scorers.original-score
+  - inherit: bioqa.document.rerank.scorers.lucene-medline

@@ -1,0 +1,6 @@
+inherit: baseqa.providers.ml.classifiers.meka
+
+classifier-name: meka.classifiers.multilabel.PCC
+options: [-W, weka.classifiers.meta.LogitBoost]
+
+# add parameters "model-file", "dataset-schema-file"

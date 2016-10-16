@@ -1,0 +1,4 @@
+inherit: bioasq.concept.rerank.classifier-train
+
+classifier: 'inherit: bioasq.concept.rerank.liblinear'
+cv-predict-file: src/main/resources/models/bioasq/concept/rerank/4b-dev-liblinear.cv

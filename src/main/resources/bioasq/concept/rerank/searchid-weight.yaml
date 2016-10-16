@@ -1,0 +1,3 @@
+inherit: baseqa.rerank.concept.searchid-weight
+
+weights-path: /bioasq/concept/rerank/ontology-logreg-params.txt

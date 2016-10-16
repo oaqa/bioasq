@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.answer_type.ConceptGSAnswerTypeLabeler
+
+quantity-question-words-path: /dictionaries/quantity-question-words.txt
+
+# add values for parameters "concept-provider" and "at-gslabel-file"

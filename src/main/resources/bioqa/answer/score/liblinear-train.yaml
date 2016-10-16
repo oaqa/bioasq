@@ -1,0 +1,4 @@
+inherit: bioqa.answer.score.classifier-train
+
+classifier: 'inherit: bioqa.answer.score.liblinear'
+cv-predict-file: src/main/resources/models/bioqa/answer/score/4b-dev-liblinear.cv

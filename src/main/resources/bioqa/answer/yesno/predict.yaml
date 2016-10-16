@@ -1,0 +1,10 @@
+inherit: baseqa.answer.yesno.predict
+
+scorers: |
+  - inherit: baseqa.answer.yesno.scorers.concept-overlap
+  - inherit: bioqa.answer.yesno.scorers.token-overlap
+  - inherit: baseqa.answer.yesno.scorers.expected-answer-overlap
+  - inherit: baseqa.answer.yesno.scorers.sentiment
+  - inherit: baseqa.answer.yesno.scorers.negation
+  - inherit: bioqa.answer.yesno.scorers.alternate-answer
+# requires "classifier"

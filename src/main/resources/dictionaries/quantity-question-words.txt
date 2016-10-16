@@ -1,0 +1,12 @@
+how many
+how much
+how large
+how long
+diameter
+value
+rate
+percentage
+incidence
+prevalence
+proportion
+number

@@ -1,0 +1,5 @@
+DISEASE	http://www.disease-ontology.org/api/metadata/
+GENE	http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=
+JOCHEM	http://www.biosemantics.org/jochem#
+MESH	http://www.nlm.nih.gov/cgi/mesh/2016/MB_cgi?field=uid&exact=Find+Exact+Term&term=
+UNIPROT	http://www.uniprot.org/uniprot/

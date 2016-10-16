@@ -1,0 +1,3 @@
+inherit: baseqa.answer_type.load-cv
+
+cv-predict-file: /models/bioqa/answer_type/4b-dev-liblinear.cv

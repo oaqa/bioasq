@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.answer_type.AnswerTypeClassifierTrainer
+
+feature-constructor: 'inherit: baseqa.answer_type.feature-constructor'
+cv-predict-limit: 5
+# requires parameter "classifier", "at-gslabel-files", "null-type", "type-ratio-threshold"

@@ -1,0 +1,4 @@
+inherit: bioqa.concept.rerank.classifier-train
+
+classifier: 'inherit: bioqa.concept.rerank.weka-logistic'
+cv-predict-file: src/main/resources/models/bioqa/concept/rerank/4b-dev-weka-logistic.cv

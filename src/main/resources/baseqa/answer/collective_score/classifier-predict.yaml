@@ -1,0 +1,10 @@
+inherit: baseqa.learning_base.classifier-predict
+
+candidate-provider: 'inherit: baseqa.answer.score.candidate-provider'
+scorers: |
+  - inherit: baseqa.answer.collective_score.scorers.original
+  - inherit: baseqa.answer.collective_score.scorers.distance
+  - inherit: baseqa.answer.collective_score.scorers.edit-distance
+  - inherit: baseqa.answer.collective_score.scorers.type-coercion
+  - inherit: baseqa.answer.collective_score.scorers.shape-distance
+# add "classifier"

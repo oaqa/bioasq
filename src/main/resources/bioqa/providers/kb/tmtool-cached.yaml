@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.bioqa.providers.kb.CachedTmToolConceptProvider
+
+triggers: [tmChem, DNorm, tmVar, GNormPlus]
+
+db-file: src/main/resources/tmtool-cache/tmtool-cache.mapdb
+map-name: tmtool-cache

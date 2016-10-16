@@ -1,0 +1,4 @@
+inherit: baseqa.answer_type.predict
+
+classifier: 'inherit: bioqa.answer_type.meka-pcc'
+predict-file: result/answer-type-predict-meka-pcc.tsv

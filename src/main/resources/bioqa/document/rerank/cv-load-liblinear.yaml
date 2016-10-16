@@ -1,0 +1,3 @@
+inherit: baseqa.document.rerank.cv-load
+
+cv-predict-file: /models/bioqa/document/rerank/4b-dev-liblinear.cv

@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.learning_base.CVPredictLoader
+
+# requires "candidate-provider", "cv-predict-file"

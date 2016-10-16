@@ -1,0 +1,4 @@
+inherit: bioqa.concept.rerank.classifier-predict
+
+classifier: 'inherit: bioqa.concept.rerank.weka-logistic'
+feature-file: result/concept-rerank-predict-weka-logistic.tsv

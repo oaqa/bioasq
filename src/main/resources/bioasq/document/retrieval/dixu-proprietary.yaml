@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bioasq.document.retrieval.DiXuProprietaryDocumentRetrievalClient
+
+host: 128.2.190.25
+port: 10008
+uri-prefix: http://www.ncbi.nlm.nih.gov/pubmed/

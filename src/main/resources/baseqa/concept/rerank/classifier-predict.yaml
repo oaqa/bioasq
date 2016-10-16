@@ -1,0 +1,7 @@
+inherit: baseqa.learning_base.classifier-predict
+
+candidate-provider: 'inherit: baseqa.concept.rerank.candidate-provider'
+scorers: |
+  - inherit: baseqa.concept.rerank.scorers.original-score
+  - inherit: baseqa.concept.rerank.scorers.name-match
+# add "classifier", "feature-file"

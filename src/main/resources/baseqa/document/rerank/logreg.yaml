@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.document.rerank.LogRegDocumentReranker
+
+query-string-contructor: edu.cmu.lti.oaqa.baseqa.providers.query.LuceneQueryStringConstructor
+query-analyzer: org.apache.lucene.analysis.standard.StandardAnalyzer
+hits: 100

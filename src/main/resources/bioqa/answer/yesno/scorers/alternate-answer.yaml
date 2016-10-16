@@ -1,0 +1,7 @@
+inherit: baseqa.answer.yesno.scorers.alternate-answer
+
+factoid-pipeline: |
+  - inherit: baseqa.question.yesno.yesno-to-factoid
+  - inherit: bioqa.answer.generate.generate
+  - inherit: baseqa.answer.modify.modify
+  - inherit: bioqa.answer.score.liblinear-predict

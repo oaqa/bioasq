@@ -1,0 +1,5 @@
+inherit: baseqa.passage.retrieval.document-to-passage
+
+include-title-abstract: true
+include-sections: false
+only-for-documents-missing-sections: false

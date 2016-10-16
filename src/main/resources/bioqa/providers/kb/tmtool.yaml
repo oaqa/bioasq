@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.bioqa.providers.kb.TmToolConceptProvider
+
+triggers: [tmChem, DNorm, tmVar, GNormPlus]

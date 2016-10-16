@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.providers.kb.LingPipeNerConceptProvider
+
+chunker-model: /ne-en-bio-genetag.HmmChunker

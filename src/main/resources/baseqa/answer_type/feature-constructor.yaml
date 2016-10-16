@@ -1,0 +1,3 @@
+inherit: baseqa.providers.ml.classifiers.feature-constructor
+
+quantity-question-words-path: /dictionaries/quantity-question-words.txt

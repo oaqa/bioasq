@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.question.concept.QuestionConceptRecognizer
+
+concept-provider: 'inherit: baseqa.providers.kb.opennlp-npppnp'

@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.answer_type.AnswerTypeClassifierPredictor
+
+feature-constructor: 'inherit: baseqa.answer_type.feature-constructor'
+# requires parameter "model"

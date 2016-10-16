@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.modify.modifiers.ListAnswerPruner
+
+ratio: 0.88

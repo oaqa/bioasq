@@ -1,0 +1,4 @@
+NN
+NNS
+NNP
+NNPS

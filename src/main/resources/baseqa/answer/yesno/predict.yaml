@@ -1,0 +1,9 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.yesno.YesNoAnswerPredictor
+
+scorers: |
+  - inherit: baseqa.answer.yesno.scorers.concept-overlap
+  - inherit: baseqa.answer.yesno.scorers.token-overlap
+  - inherit: baseqa.answer.yesno.scorers.expected-answer-overlap
+  - inherit: baseqa.answer.yesno.scorers.sentiment
+  - inherit: baseqa.answer.yesno.scorers.negation
+# requires "classifier"

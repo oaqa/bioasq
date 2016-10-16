@@ -1,0 +1,4 @@
+inherit: baseqa.answer.collective_score.classifier-train
+
+classifier: 'inherit: bioqa.answer.collective_score.weka-cvr'
+resample-type: DOWN

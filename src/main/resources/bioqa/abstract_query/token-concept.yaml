@@ -1,0 +1,7 @@
+inherit: baseqa.abstract_query.token-concept
+
+stoplist-path: /dictionaries/stoplist-gene-top5k.txt
+use-weight: false
+use-type: false
+#pos-tags-path: /dictionaries/pos-tags.txt
+#noun-tags-path: /dictionaries/noun-tags.txt

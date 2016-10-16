@@ -1,0 +1,10 @@
+inherit: baseqa.collection.json.json-cas-consumer
+
+document-limit: 10
+snippet-limit: 10
+concept-limit: 10
+triple-limit: 10
+factoid-answer-limit: 5
+list-answer-limit: 100
+
+result-dir: result/

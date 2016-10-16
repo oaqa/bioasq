@@ -1,0 +1,4 @@
+inherit: baseqa.providers.ml.classifiers.weka-knn
+
+model-file: src/main/resources/models/bioqa/answer_type/4b-dev-weka-knn.model
+dataset-schema-file: src/main/resources/models/bioqa/answer_type/4b-dev-weka-knn.dataset-schema

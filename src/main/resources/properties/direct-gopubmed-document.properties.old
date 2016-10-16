@@ -1,0 +1,3 @@
+pubmed.search.service = http://gopubmed.org/web/gopubmedbeta/bioasq/pubmed
+require.session.url = true
+session.refresh.interval = 9

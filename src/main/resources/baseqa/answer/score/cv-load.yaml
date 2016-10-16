@@ -1,0 +1,3 @@
+inherit: baseqa.learning_base.cv-load
+
+candidate-provider: 'inherit: baseqa.answer.score.candidate-provider'

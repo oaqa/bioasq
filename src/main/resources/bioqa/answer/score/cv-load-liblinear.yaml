@@ -1,0 +1,3 @@
+inherit: baseqa.answer.score.cv-load
+
+cv-predict-file: /models/bioqa/answer/score/4b-dev-liblinear.cv

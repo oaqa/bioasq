@@ -1,0 +1,3 @@
+inherit: baseqa.answer.score.scorers.token-proximity
+
+stoplist: /dictionaries/stoplist-gene-top5k.txt

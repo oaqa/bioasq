@@ -1,0 +1,5 @@
+inherit: baseqa.aquery.token-selection
+
+# explanations see https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
+pos-tags-path: /dictionaries/pos-tags.txt
+noun-tags-path: /dictionaries/noun-tags.txt

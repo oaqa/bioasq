@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.providers.parser.ClearParserProvider
+
+pos-model: /medical-en-pos.xz
+dep-model: /medical-en-dep.xz

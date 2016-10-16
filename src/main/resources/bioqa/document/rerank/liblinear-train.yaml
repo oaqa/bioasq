@@ -1,0 +1,4 @@
+inherit: bioqa.document.rerank.classifier-train
+
+classifier: 'inherit: bioqa.document.rerank.liblinear'
+cv-predict-file: src/main/resources/models/bioqa/document/rerank/4b-dev-liblinear.cv

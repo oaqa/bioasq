@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.abstract_query.TokenSelectionAbstractQueryGenerator
+
+# add parameter values for pos-tags-path and stoplist-path

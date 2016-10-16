@@ -1,0 +1,9 @@
+inherit: baseqa.learning_base.classifier-train
+
+candidate-provider: 'inherit: baseqa.passage.rerank.candidate-provider'
+scorers: |
+  - inherit: baseqa.passage.rerank.scorers.original-score
+  - inherit: baseqa.passage.rerank.scorers.meta-info
+  - inherit: baseqa.passage.rerank.scorers.lucene
+resample-type: DOWN
+# add "classifier", "cv-predict-file"

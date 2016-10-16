@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.score.scorers.TokenProximityAnswerScorer
+
+stoplist: /dictionaries/stoplist-top5k.txt
+window-size: 10
+infinity: .inf
+smoothing: 5.0

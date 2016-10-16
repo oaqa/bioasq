@@ -1,0 +1,10 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.yesno.YesNoAnswerTrainer
+
+scorers: |
+  - inherit: baseqa.answer.yesno.scorers.concept-overlap
+  - inherit: baseqa.answer.yesno.scorers.token-overlap
+  - inherit: baseqa.answer.yesno.scorers.expected-answer-overlap
+  - inherit: baseqa.answer.yesno.scorers.sentiment
+  - inherit: baseqa.answer.yesno.scorers.negation
+resample-type: DOWN
+# requires "classifier", "cv-predict-file"

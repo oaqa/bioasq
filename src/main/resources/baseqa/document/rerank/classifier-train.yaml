@@ -1,0 +1,7 @@
+inherit: baseqa.learning_base.classifier-train
+
+candidate-provider: 'inherit: baseqa.document.rerank.candidate-provider'
+scorers: |
+  - inherit: baseqa.document.rerank.scorers.original-score
+resample-type: DOWN
+# add "classifier", "cv-predict-file"

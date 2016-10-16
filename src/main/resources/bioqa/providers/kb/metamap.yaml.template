@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.bioqa.providers.kb.MetaMapConceptProvider
+
+version: # ADD VERSION HERE, E.G. 1516
+username: # ADD USERNAME HERE
+password: # ADD PASSWORD HERE
+email: # ADD EMAIL ADD

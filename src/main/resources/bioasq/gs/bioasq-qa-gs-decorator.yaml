@@ -1,0 +1,5 @@
+inherit: baseqa.collection.json.json-gs-decorator
+
+file: input/4b-dev.json.auto.fulltext
+#file: input/3b-dev.json.fixed
+#file: input/4b-dev.json.auto.abstract

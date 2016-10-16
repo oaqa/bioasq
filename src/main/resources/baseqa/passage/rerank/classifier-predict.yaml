@@ -1,0 +1,8 @@
+inherit: baseqa.learning_base.classifier-predict
+
+candidate-provider: 'inherit: baseqa.passage.rerank.candidate-provider'
+scorers: |
+  - inherit: baseqa.passage.rerank.scorers.original-score
+  - inherit: baseqa.passage.rerank.scorers.meta-info
+  - inherit: baseqa.passage.rerank.scorers.lucene
+# add "classifier", "feature-file"

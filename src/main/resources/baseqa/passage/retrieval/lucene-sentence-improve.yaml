@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.passage.retrieval.ImprovedLuceneInMemorySentenceRetrievalExecutor
+
+query-string-constructor: edu.cmu.lti.oaqa.baseqa.providers.query.LuceneQueryStringConstructor
+query-analyzer: org.apache.lucene.analysis.standard.StandardAnalyzer
+hits: 200

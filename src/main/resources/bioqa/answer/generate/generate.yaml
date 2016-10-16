@@ -1,0 +1,8 @@
+inherit: baseqa.answer.generate.generate
+
+generators: |
+  - inherit: baseqa.answer.generate.generators.choice
+  - inherit: baseqa.answer.generate.generators.quantity
+  - inherit: bioqa.answer.generate.generators.concept
+  - inherit: baseqa.answer.generate.generators.cav-covering-concept
+#  - inherit: baseqa.answer.generate.generators.covering-phrase

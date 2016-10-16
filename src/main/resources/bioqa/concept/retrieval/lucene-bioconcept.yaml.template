@@ -1,0 +1,8 @@
+inherit: baseqa.concept.retrieval.lucene
+
+fields: [name, synonym, definition]
+index: # ADD INDEX PATH HERE, E.G. ../index/bioconcept-lucene
+id-field: id
+name-field: name
+source-field: source
+uri-prefix: /dictionaries/bioconcept-uri-prefix.tsv

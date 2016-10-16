@@ -1,0 +1,4 @@
+inherit: baseqa.evidence.concept.search
+
+concept-search-provider: 'inherit: bioqa.providers.kb.concept-search-uts-cached'
+synonym-expansion-provider: 'inherit: bioqa.providers.kb.synonym-uts-cached'

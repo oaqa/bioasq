@@ -1,0 +1,4 @@
+inherit: bioqa.answer.yesno.predict
+
+classifier: 'inherit: bioqa.answer.yesno.weka-logistic'
+feature-file: result/answer-yesno-predict-weka-logistic.tsv

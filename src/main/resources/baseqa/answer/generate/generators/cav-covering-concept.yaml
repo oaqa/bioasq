@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.generate.generators.CavCoveringConceptCavGenerator
+
+filter-question-concepts: false
+filter-question-tokens: false
+stoplist: null

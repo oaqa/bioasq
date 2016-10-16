@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.learning_base.ClassifierTrainer
+
+# requires "candidate-provider", "scorers", "classifier", "cv-predict-file", "at-least-one-correct", "resample-type"

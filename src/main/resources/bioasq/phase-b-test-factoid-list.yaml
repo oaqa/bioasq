@@ -1,0 +1,122 @@
+# execute
+#      mvn exec:exec -Dconfig=bioasq.phase-b-test-factoid-list
+# to test the pipeline
+
+configuration:
+  name: phase-b-test-factoid-list
+  author: ziy
+
+persistence-provider:
+  inherit: baseqa.persistence.local-sqlite-persistence-provider
+
+collection-reader:
+  inherit: baseqa.collection.json.json-collection-reader
+  dataset: BIOASQ-QA
+  file:
+    - input/4b-5-b.json
+  type: [factoid, list]
+  persistence-provider: |
+    inherit: baseqa.persistence.local-sqlite-persistence-provider
+
+pipeline:
+  - inherit: ecd.phase
+    name: question-parse
+    options: |
+      - inherit: bioqa.question.parse.clearnlp-bioinformatics
+
+  - inherit: ecd.phase
+    name: question-concept-metamap
+    options: |
+      - inherit: bioqa.question.concept.metamap-cached
+
+  - inherit: ecd.phase
+    name: question-concept-tmtool
+    options: |
+      - inherit: bioqa.question.concept.tmtool-cached
+
+  - inherit: ecd.phase
+    name: question-concept-lingpipe-genia
+    options: |
+      - inherit: bioqa.question.concept.lingpipe-genia
+
+  - inherit: ecd.phase
+    name: question-focus
+    options: |
+      - inherit: baseqa.question.focus
+
+  - inherit: ecd.phase
+    name: passage-to-view
+    options: |
+      - inherit: baseqa.evidence.passage-to-view
+
+  - inherit: ecd.phase
+    name: evidence-parse
+    options: |
+      - inherit: bioqa.evidence.parse.clearnlp-bioinformatics
+
+  - inherit: ecd.phase
+    name: evidence-concept-metamap
+    options: |
+      - inherit: bioqa.evidence.concept.metamap-cached
+
+  - inherit: ecd.phase
+    name: evidence-concept-tmtool
+    options: |
+      - inherit: bioqa.evidence.concept.tmtool-cached
+
+  - inherit: ecd.phase
+    name: evidence-concept-lingpipe-genia
+    options: |
+      - inherit: bioqa.evidence.concept.lingpipe-genia
+
+  - inherit: ecd.phase
+    name: evidence-concept-frequent-phrase
+    options: |
+      - inherit: baseqa.evidence.concept.frequent-phrase
+
+  - inherit: ecd.phase
+    name: concept-search-uts
+    options: |
+      - inherit: bioqa.evidence.concept.search-uts-cached
+
+  - inherit: ecd.phase
+    name: concept-merge
+    options: |
+      - inherit: baseqa.evidence.concept.merge
+
+  - inherit: ecd.phase
+    name: answer-type
+    options: |
+      - inherit: bioqa.answer_type.liblinear-null-predict
+
+  - inherit: ecd.phase
+    name: answer-generate
+    options: |
+      - inherit: bioqa.answer.generate.generate
+
+  - inherit: ecd.phase
+    name: answer-modify
+    options: |
+      - inherit: baseqa.answer.modify.modify
+
+  - inherit: ecd.phase
+    name: answer-score
+    options: |
+      - inherit: bioqa.answer.score.liblinear-predict
+
+  - inherit: ecd.phase
+    name: answer-collective-score
+    options: |
+      - inherit: bioqa.answer.collective_score.liblinear-predict
+#      - inherit: base.noop
+
+  - inherit: ecd.phase
+    name: answer-prune
+    options: |
+      - inherit: baseqa.answer.modify.pruner
+
+#  - inherit: baseqa.cas-serialize
+
+post-process:
+  # submission
+  - inherit: bioasq.collection.json.json-cas-consumer

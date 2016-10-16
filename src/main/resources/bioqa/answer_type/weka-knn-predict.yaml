@@ -1,0 +1,4 @@
+inherit: baseqa.answer_type.predict
+
+classifier: 'inherit: bioqa.answer_type.weka-knn'
+predict-file: result/answer-type-predict-weka-knn.tsv

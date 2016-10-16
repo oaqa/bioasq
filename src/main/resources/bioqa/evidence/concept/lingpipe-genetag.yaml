@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.evidence.concept.PassageConceptRecognizer
+
+concept-provider: 'inherit: bioqa.providers.kb.lingpipe-genetag'
+view-name-prefix: ptv

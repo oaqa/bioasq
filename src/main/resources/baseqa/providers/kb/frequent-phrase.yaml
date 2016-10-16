@@ -1,0 +1,8 @@
+class: edu.cmu.lti.oaqa.baseqa.providers.kb.FrequentPhraseConceptProvider
+
+max-length: 6
+min-freq: 2
+min-freq-ratio: 0.0
+type: AVERAGE
+score-threshold: 1.0
+score-ratio-threshold: 0.8

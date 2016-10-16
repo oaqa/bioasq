@@ -1,0 +1,4 @@
+inherit: baseqa.providers.ml.classifiers.meka-pcc
+
+model-file: src/main/resources/models/bioqa/answer_type/4b-dev-meka-pcc.model
+dataset-schema-file: src/main/resources/models/bioqa/answer_type/4b-dev-meka-pcc.dataset-schema

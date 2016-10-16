@@ -1,0 +1,9 @@
+inherit: baseqa.answer_type.train
+
+classifier: 'inherit: bioqa.answer_type.weka-reptree-null'
+cv-predict-file: src/main/resources/models/bioqa/answer_type/4b-dev-weka-reptree-null.cv
+at-gslabel-files:
+ - /models/bioqa/answer_type/4b-dev-gslabel-uts.json
+ - /models/bioqa/answer_type/4b-dev-gslabel-tmtool.json
+null-type: true
+type-ratio-threshold: 0.5

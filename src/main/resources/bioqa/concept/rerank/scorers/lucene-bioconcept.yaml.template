@@ -1,0 +1,8 @@
+inherit: baseqa.concept.rerank.scorers.lucene
+
+fields: [name, synonym, definition]
+index: # ADD INDEX PATH HERE, E.G. ../index/bioconcept-lucene
+id-field: id
+source-field: source
+uri-prefix: /dictionaries/bioconcept-uri-prefix.tsv
+stoplist-path: /dictionaries/stoplist-gene-top5k.txt

@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bioasq.triple.retrieval.GoPubMedTripleRetrievalExecutor
+
+pages: 1
+hits: 10
+conf: /properties/direct-gopubmed-triple.properties # /properties/metal-gopubmed-triple.properties

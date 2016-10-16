@@ -1,0 +1,3 @@
+inherit: bioqa.question.concept.tmtool
+
+concept-provider: 'inherit: bioqa.providers.kb.tmtool-cached'

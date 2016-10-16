@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.bioasq.passage.PmcContentSetter
+
+url-format: # ADD THE FORMATABLE URL HERE, E.G. http://localhost:8080/pmc/%s

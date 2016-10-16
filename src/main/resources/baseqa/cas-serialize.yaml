@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.CasSerializer
+
+dir: result/
+typesystem: baseqa.type.OAQATypes

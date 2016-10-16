@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.providers.parser.LingPipeParserProvider
+
+token-factory: com.aliasi.tokenizer.RegExTokenizerFactory
+token-factory-params: ['([-''\d\p{L}]|\([-''\d\p{L}]+\))*[-''\d\p{L}]+|\S']
+pos-model: /pos-en-bio-genia.HiddenMarkovModel

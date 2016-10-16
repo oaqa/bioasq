@@ -1,0 +1,5 @@
+inherit: baseqa.answer_type.gslabel-concept-search
+
+at-gslabel-file: src/main/resources/models/bioqa/answer_type/4b-dev-gslabel-uts.json
+concept-search-provider: 'inherit: bioqa.providers.kb.concept-search-uts-cached'
+batch-size: 1

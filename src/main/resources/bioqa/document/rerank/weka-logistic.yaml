@@ -1,0 +1,6 @@
+inherit: baseqa.providers.ml.classifiers.weka-logistic
+
+model-file: src/main/resources/models/bioqa/document/rerank/4b-dev-weka-logistic.model
+dataset-schema-file: src/main/resources/models/bioqa/document/rerank/4b-dev-weka-logistic.dataset-schema
+dataset-export: src/main/resources/models/bioqa/document/rerank/4b-dev-weka.arff
+balance-weight: false

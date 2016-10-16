@@ -1,0 +1,3 @@
+inherit: baseqa.passage.rerank.scorers.lucene
+
+stoplist-path: /dictionaries/stoplist-gene-top5k.txt

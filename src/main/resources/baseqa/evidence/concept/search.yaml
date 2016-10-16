@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.evidence.concept.ConceptSearcher
+
+# add "concept-search-provider", "synonym-expansion-provider"

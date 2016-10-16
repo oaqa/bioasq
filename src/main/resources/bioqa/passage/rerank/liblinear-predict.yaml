@@ -1,0 +1,4 @@
+inherit: bioqa.passage.rerank.classifier-predict
+
+classifier: 'inherit: bioqa.passage.rerank.liblinear'
+feature-file: result/passage-rerank-predict-liblinear.tsv

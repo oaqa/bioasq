@@ -1,0 +1,5 @@
+inherit: baseqa.providers.ml.classifiers.weka-cvr
+
+model-file: src/main/resources/models/bioqa/answer/score/4b-dev-weka-cvr.model
+dataset-schema-file: src/main/resources/models/bioqa/answer/score/4b-dev-weka-cvr.dataset-schema
+balance-weight: true

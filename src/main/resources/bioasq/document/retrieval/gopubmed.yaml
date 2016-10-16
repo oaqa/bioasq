@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bioasq.document.retrieval.GoPubMedDocumentRetrievalExecutor
+
+pages: 4
+hits: 100
+conf: /properties/direct-gopubmed-document.properties # /properties/metal-gopubmed-document.properties

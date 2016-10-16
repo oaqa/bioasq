@@ -1,0 +1,7 @@
+inherit: baseqa.document.rerank.scorers.lucene
+
+fields: [articleTitle, abstractText]
+index: # ADD IDNEX PATH HERE, E.G. ../index/medline16n-lucene
+id-field: pmid
+uri-prefix: http://www.ncbi.nlm.nih.gov/pubmed/
+stoplist-path: /dictionaries/stoplist-gene-top5k.txt

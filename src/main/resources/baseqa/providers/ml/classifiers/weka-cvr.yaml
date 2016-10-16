@@ -1,0 +1,18 @@
+inherit: baseqa.providers.ml.classifiers.weka
+
+classifier-name: weka.classifiers.meta.ClassificationViaRegression
+options: []
+
+#classifier-name: weka.classifiers.meta.AttributeSelectedClassifier
+#options:
+#  - '-E'
+#  - 'weka.attributeSelection.CorrelationAttributeEval'
+#  - '-S'
+#  - 'weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N 100'
+#  - '-W'
+#  - 'weka.classifiers.functions.SimpleLogistic'
+
+#classifier-name: weka.classifiers.meta.ClassificationViaClustering
+#options: []
+
+# add parameters "model-file", "dataset-schema-file"

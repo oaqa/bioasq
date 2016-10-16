@@ -1,0 +1,3 @@
+inherit: baseqa.answer.cao.predict
+
+transducer: 'inherit: bioqa.answer.cao.transducer-crf'

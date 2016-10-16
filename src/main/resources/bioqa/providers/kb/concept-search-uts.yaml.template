@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.bioqa.providers.kb.UtsConceptSearchProvider
+
+service: http://umlsks.nlm.nih.gov
+version: # ADD VERSION HERE, E.G. 2015AB
+username: # ADD USERNAME HERE
+password: # ADD PASSWORD HERE

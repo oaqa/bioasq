@@ -1,0 +1,3 @@
+inherit: baseqa.answer.score.scorers.stopword-count
+
+stoplist: /dictionaries/stoplist-gene-top5k.txt

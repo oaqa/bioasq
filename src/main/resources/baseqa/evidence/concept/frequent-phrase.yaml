@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.evidence.concept.PassageConceptRecognizer
+
+concept-provider: 'inherit: baseqa.providers.kb.frequent-phrase'
+view-name-prefix: ptv

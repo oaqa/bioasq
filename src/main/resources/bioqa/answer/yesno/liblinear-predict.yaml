@@ -1,0 +1,4 @@
+inherit: bioqa.answer.yesno.predict
+
+classifier: 'inherit: bioqa.answer.yesno.liblinear'
+feature-file: result/answer-yesno-predict-liblinear.tsv

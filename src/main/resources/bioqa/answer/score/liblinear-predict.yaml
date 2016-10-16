@@ -1,0 +1,4 @@
+inherit: bioqa.answer.score.classifier-predict
+
+classifier: 'inherit: bioqa.answer.score.liblinear'
+feature-file: result/answer-score-predict-liblinear.tsv

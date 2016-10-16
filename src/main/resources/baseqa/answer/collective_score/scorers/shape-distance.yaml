@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.collective_score.scorers.ShapeDistanceCollectiveAnswerScorer
+
+top-limit: [1, 3, 5, 10]

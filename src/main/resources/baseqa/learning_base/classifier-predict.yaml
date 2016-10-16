@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.learning_base.ClassifierPredictor
+
+# requires "candidate-provider", "scorers", "classifier", "feature-file"

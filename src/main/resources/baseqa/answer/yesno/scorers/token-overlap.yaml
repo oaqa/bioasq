@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.yesno.scorers.TokenOverlapYesNoScorer
+
+stoplist-path: /dictionaries/stoplist.txt
+view-name-prefix: ptv

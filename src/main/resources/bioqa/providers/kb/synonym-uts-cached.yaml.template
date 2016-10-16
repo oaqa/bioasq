@@ -1,0 +1,11 @@
+class: edu.cmu.lti.oaqa.bioqa.providers.kb.CachedUtsSynonymExpansionProvider
+
+service: http://umlsks.nlm.nih.gov
+version: # ADD VERSION HERE, E.G. 2015AB
+username: # ADD USERNAME HERE
+password: # ADD PASSWORD HERE
+nthreads: 100
+timeout: 5
+
+db-file: src/main/resources/synonym-cache/uts-cache.mapdb
+map-name: uts-cache

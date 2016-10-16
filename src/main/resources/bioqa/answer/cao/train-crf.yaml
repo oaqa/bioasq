@@ -1,0 +1,5 @@
+inherit: baseqa.answer.cao.train
+
+transducer: 'inherit: bioqa.answer.cao.transducer-crf'
+sample-o2o: 1.0
+window-size: 20

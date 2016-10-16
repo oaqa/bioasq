@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.providers.kb.OpenNlpChunkerConceptProvider
+
+chunker-model: /en-chunker.bin
+min-length: 2

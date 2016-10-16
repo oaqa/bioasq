@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.baseqa.passage.rerank.scorers.LuceneInMemoryPassageScorer
+
+hits: 100
+stoplist-path: /dictionaries/stoplist.txt

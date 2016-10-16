@@ -1,0 +1,4 @@
+inherit: bioqa.answer.yesno.train
+
+classifier: 'inherit: bioqa.answer.yesno.weka-cvr'
+cv-predict-file: src/main/resources/models/bioqa/answer/yesno/4b-dev-weka-cvr.cv

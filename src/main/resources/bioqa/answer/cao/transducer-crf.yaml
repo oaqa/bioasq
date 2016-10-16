@@ -1,0 +1,3 @@
+inherit: baseqa.providers.ml.transducers.crf
+
+model-file: src/main/resources/models/bioqa/answer/cao/3b-dev-crf-model

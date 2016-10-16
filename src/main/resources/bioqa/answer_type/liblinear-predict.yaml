@@ -1,0 +1,7 @@
+inherit: baseqa.answer_type.predict
+
+classifier: 'inherit: bioqa.answer_type.liblinear'
+predict-file: result/answer-type-predict-liblinear.tsv
+
+cross-opts:
+  limit: [5]

@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.yesno.scorers.ExpectedAnswerOverlapYesNoScorer
+
+view-name-prefix: ptv

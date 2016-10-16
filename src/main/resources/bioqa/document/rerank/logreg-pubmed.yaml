@@ -1,0 +1,4 @@
+inherit: baseqa.document.rerank.logreg
+
+query-string-contructor: edu.cmu.lti.oaqa.bioqa.providers.query.PubMedQueryStringConstructor
+doc-logreg-params: /bioqa/document/rerank/logreg-params.txt

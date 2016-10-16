@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.question.parse.QuestionParser
+
+parser-provider: 'inherit: bioqa.providers.parser.lingpipe-indoeuro-medpost'

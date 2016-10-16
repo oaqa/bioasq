@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.concept.rerank.WeightingSearchIdConceptReranker
+
+# requires "weights-path" parameter

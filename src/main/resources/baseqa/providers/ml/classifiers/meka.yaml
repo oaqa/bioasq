@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.providers.ml.classifiers.MekaProvider
+
+# add parameters "model-file", "classifier-name", "options", "dataset-schema-file"

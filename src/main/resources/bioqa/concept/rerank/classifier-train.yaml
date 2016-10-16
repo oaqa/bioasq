@@ -1,0 +1,6 @@
+inherit: baseqa.concept.rerank.classifier-train
+
+scorers: |
+  - inherit: baseqa.concept.rerank.scorers.original-score
+  - inherit: baseqa.concept.rerank.scorers.name-match
+  - inherit: bioqa.concept.rerank.scorers.lucene-bioconcept

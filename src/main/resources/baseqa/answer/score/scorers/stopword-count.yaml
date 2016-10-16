@@ -1,0 +1,3 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.score.scorers.StopwordCountAnswerScorer
+
+stoplist: /dictionaries/stoplist-top5k.txt

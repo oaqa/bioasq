@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.baseqa.concept.rerank.LuceneInMemoryConceptReranker
+
+query-string-contructor: edu.cmu.lti.oaqa.baseqa.providers.query.LuceneQueryStringConstructor
+query-analyzer: org.apache.lucene.analysis.standard.StandardAnalyzer
+hits: 100
+limit: 10
+rerank-weight: 1.0

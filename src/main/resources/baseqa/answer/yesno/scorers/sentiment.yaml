@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.yesno.scorers.SentimentYesNoScorer
+
+positive-wordlist-path: /dictionaries/positive-words.txt
+negative-wordlist-path: /dictionaries/negative-words.txt
+view-name-prefix: ptv

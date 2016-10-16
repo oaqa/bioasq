@@ -1,0 +1,103 @@
+# execute
+#      mvn exec:exec -Dconfig=bioasq.phase-a-train-concept-document
+# to test the pipeline
+
+configuration:
+  name: phase-a-train-concept-document
+  author: ziy
+
+persistence-provider:
+  inherit: baseqa.persistence.local-sqlite-persistence-provider
+
+collection-reader:
+  inherit: baseqa.collection.json.json-collection-reader
+  dataset: BIOASQ-QA
+  file:
+    - input/dryrun-a.json
+    - input/1b-1-a.json
+    - input/1b-2-a.json
+    - input/1b-3-a.json
+    - input/2b-1-a.json
+    - input/2b-2-a.json
+    - input/2b-3-a.json
+    - input/2b-4-a.json
+    - input/2b-5-a.json
+    - input/3b-1-a.json
+    - input/3b-2-a.json
+    - input/3b-3-a.json
+    - input/3b-4-a.json
+#    - input/3b-5-a.json
+  decorators: |
+    - inherit: bioasq.gs.bioasq-qa-gs-decorator
+  persistence-provider: |
+    inherit: baseqa.persistence.local-sqlite-persistence-provider
+
+pipeline:
+  - inherit: ecd.phase
+    name: question-parse
+    options: |
+      - inherit: bioqa.question.parse.clearnlp-bioinformatics
+
+  - inherit: ecd.phase
+    name: question-concept-metamap
+    options: |
+      - inherit: bioqa.question.concept.metamap-cached
+
+  - inherit: ecd.phase
+    name: question-concept-tmtool
+    options: |
+      - inherit: bioqa.question.concept.tmtool-cached
+
+  - inherit: ecd.phase
+    name: question-concept-lingpipe-genia
+    options: |
+      - inherit: bioqa.question.concept.lingpipe-genia
+
+  - inherit: ecd.phase
+    name: concept-search-uts
+    options: |
+      - inherit: bioqa.evidence.concept.search-uts-cached
+
+  - inherit: ecd.phase
+    name: concept-merge
+    options: |
+      - inherit: baseqa.evidence.concept.merge
+
+  - inherit: ecd.phase
+    name: abstract-query-primary
+    options: |
+      - inherit: baseqa.abstract_query.token-concept
+
+  # concept
+  - inherit: ecd.phase
+    name: concept-retrieval
+    options: |
+      - inherit: bioqa.concept.retrieval.lucene-bioconcept
+#      - inherit: bioasq.concept.retrieval.gopubmed
+
+  - inherit: ecd.phase
+    name: concept-rerank-train-liblinear
+    options: |
+      - inherit: bioqa.concept.rerank.liblinear-train
+#      - inherit: bioasq.concept.rerank.liblinear-train
+
+  - inherit: ecd.phase
+    name: concept-rerank-train-weka-logistic
+    options: |
+      - inherit: bioqa.concept.rerank.weka-logistic-train
+
+  # document
+  - inherit: ecd.phase
+    name: document-retrieval
+    options: |
+      - inherit: bioqa.document.retrieval.lucene-medline
+
+  - inherit: ecd.phase
+    name: document-rerank-train-liblinear
+    options: |
+      - inherit: bioqa.document.rerank.liblinear-train
+
+  - inherit: ecd.phase
+    name: document-rerank-train-weka-logistic
+    options: |
+      - inherit: bioqa.document.rerank.weka-logistic-train

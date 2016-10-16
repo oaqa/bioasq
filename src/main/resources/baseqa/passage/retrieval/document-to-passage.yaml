@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.baseqa.passage.retrieval.DocumentToPassageConverter
+
+include-title-abstract: true
+include-sections: true
+only-for-documents-missing-sections: true

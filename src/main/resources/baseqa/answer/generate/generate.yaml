@@ -1,0 +1,8 @@
+class: edu.cmu.lti.oaqa.baseqa.answer.generate.CavGenerationManager
+
+generators: |
+  - inherit: baseqa.answer.generate.generators.choice
+  - inherit: baseqa.answer.generate.generators.quantity
+  - inherit: baseqa.answer.generate.generators.concept
+  - inherit: baseqa.answer.generate.generators.cav-covering-concept
+#  - inherit: baseqa.answer.generate.generators.covering-phrase

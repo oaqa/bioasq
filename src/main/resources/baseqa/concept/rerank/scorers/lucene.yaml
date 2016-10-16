@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.baseqa.concept.rerank.scorers.LuceneConceptScorer
+
+stoplist-path: /dictionaries/stoplist.txt
+hits: 100
+
+# requires "fields", "index", "id-field", "source-field", "uri-prefix"

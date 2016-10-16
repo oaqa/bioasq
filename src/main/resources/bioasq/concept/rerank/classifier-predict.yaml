@@ -1,0 +1,6 @@
+inherit: baseqa.concept.rerank.classifier-predict
+
+scorers: |
+  - inherit: baseqa.concept.rerank.scorers.original-score
+  - inherit: baseqa.concept.rerank.scorers.name-match
+  - inherit: bioasq.concept.rerank.scorers.gopubmed

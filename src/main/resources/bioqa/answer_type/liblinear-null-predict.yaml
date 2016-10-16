@@ -1,0 +1,5 @@
+inherit: baseqa.answer_type.predict
+
+classifier: 'inherit: bioqa.answer_type.liblinear-null'
+predict-file: result/answer-type-predict-liblinear-null.tsv
+limit: 5

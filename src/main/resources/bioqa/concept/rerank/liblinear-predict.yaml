@@ -1,0 +1,4 @@
+inherit: bioqa.concept.rerank.classifier-predict
+
+classifier: 'inherit: bioqa.concept.rerank.liblinear'
+feature-file: result/concept-rerank-predict-liblinear.tsv

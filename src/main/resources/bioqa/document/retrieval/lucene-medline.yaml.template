@@ -1,0 +1,8 @@
+inherit: baseqa.document.retrieval.lucene
+
+fields: [articleTitle, abstractText]
+index: # ADD IDNEX PATH HERE, E.G. ../index/medline16n-lucene
+id-field: pmid
+title-field: articleTitle
+text-field: abstractText
+uri-prefix: http://www.ncbi.nlm.nih.gov/pubmed/

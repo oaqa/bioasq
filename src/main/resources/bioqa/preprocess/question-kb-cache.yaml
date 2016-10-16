@@ -1,0 +1,7 @@
+inherit: baseqa.preprocess.question-concept-cache
+
+concept-providers: |
+ - inherit: bioqa.providers.kb.tmtool-cached
+ - inherit: bioqa.providers.kb.metamap-cached
+synonym-expansion-providers: |
+ - inherit: bioqa.providers.kb.synonym-uts-cached

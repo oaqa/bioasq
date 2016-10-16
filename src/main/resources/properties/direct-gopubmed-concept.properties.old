@@ -1,0 +1,7 @@
+disease.ontology.service = http://gopubmed.org/web/bioasq/doid/json
+gene.ontology.service = http://gopubmed.org/web/bioasq/go/json
+jochem.service = http://gopubmed.org/web/bioasq/jochem/json
+mesh.service = http://gopubmed.org/web/bioasq/mesh/json
+uniprot.service = http://gopubmed.org/web/bioasq/uniprot/json
+require.session.url = true
+session.refresh.interval = 9
