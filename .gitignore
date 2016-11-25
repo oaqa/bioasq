@@ -7,3 +7,5 @@
 /target/
 /persistence/
 /result/
+/input/
+/src/main/resources/*-cache/
