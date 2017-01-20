@@ -249,7 +249,7 @@ The common evaluation metrics are defined in the BaseQA project's [`eval`](https
     
 ### Retrain the Models
 
-The system includes pretrained models using the predefined `*-train-*` descriptors (i.e. 4b-dev set _minus_ 4b-5 test set). However, if you plan to retrain the models, you can follow these steps. Please be aware that the models are saved under `resources/models`, and loaded from classpath directly, which means you might want to recompile the project using `mvn clean compile` to copy the newly generated models into the `target` directory between the training processes, so that the next training can use the models from the previous one.
+The system includes pretrained models using the predefined `*-train-*` descriptors (i.e. 4b-dev set _minus_ 3b-5 test set). However, if you plan to retrain the models, you can follow these steps. Please be aware that the models are saved under `resources/models`, and loaded from classpath directly, which means you might want to recompile the project using `mvn clean compile` to copy the newly generated models into the `target` directory between the training processes, so that the next training can use the models from the previous one.
 
 1. Put the `4b-dev.json.auto.fulltext` file under the directory `input` if you haven't done so. If you use a customized directory and/or gold-standard file, you need to change the [`resources/bioasq/gs/bioasq-qa-decorator.yaml`](src/main/resources/bioasq/gs/bioasq-qa-decorator.yaml) descriptor content accordingly.
 
