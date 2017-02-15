@@ -175,13 +175,15 @@ This system needs to access external structured and unstructured resources for q
     * [`resources/bioqa/document/retrieval/lucene-medline.yaml.template`](src/main/resources/bioqa/document/retrieval/lucene-medline.yaml.template)
     * [`resources/bioqa/document/rerank/scorers/lucene-medline.yaml.template`](src/main/resources/bioqa/document/rerank/scorers/lucene-medline.yaml.template) 
     
-1. Update the `version` (e.g. `1415`), `username`, `password`, and `email` parameters in the `uts` and `metamap` related providers, and remove the `.template` suffix from the file names, including
+1. Update the `version`, `username`, `password`, and `email` parameters in the `uts` and `metamap` related providers, and remove the `.template` suffix from the file names, including
     * [`resources/bioqa/providers/kb/concept-search-uts.yaml.template`](src/main/resources/bioqa/providers/kb/concept-search-uts.yaml.template)
     * [`resources/bioqa/providers/kb/concept-search-uts-cached.yaml.template`](src/main/resources/bioqa/providers/kb/concept-search-uts-cached.yaml.template)
     * [`resources/bioqa/providers/kb/metamap.yaml.template`](src/main/resources/bioqa/providers/kb/metamap.yaml.template)
     * [`resources/bioqa/providers/kb/metamap-cached.yaml.template`](src/main/resources/bioqa/providers/kb/metamap-cached.yaml.template)
     * [`resources/bioqa/providers/kb/synonym-uts.yaml.template`](src/main/resources/bioqa/providers/kb/synonym-uts.yaml.template)
     * [`resources/bioqa/providers/kb/synonym-uts-cached.yaml.template`](src/main/resources/bioqa/providers/kb/synonym-uts-cached.yaml.template)
+    
+    Note that the `version` parameter takes a string value, which means you have to add single or double quotes around the metamap version number, e.g.`'1516'`. Otherwise, YAML would intepret `1516` as an integer.
     
 1. Install the dependencies and compile the resources via Maven:
     ```

@@ -103,7 +103,7 @@
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio</groupId>
       <artifactId>skr-webapi</artifactId>
-      <version>0.0.4</version>
+      <version>0.0.5</version>
     </dependency>
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio</groupId>
