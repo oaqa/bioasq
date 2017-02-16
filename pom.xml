@@ -36,11 +36,6 @@
   </scm>
   <repositories>
     <repository>
-      <id>edu.umass.ciir.releases</id>
-      <name>CIIR Nexus Releases</name>
-      <url>http://scm-ciir.cs.umass.edu:8080/nexus/content/repositories/releases/</url>
-    </repository>
-    <repository>
       <id>ziy-mvnrepo-releases</id>
       <name>ziy GitHub Personal Repo</name>
       <url>https://raw.github.com/ziy/mvn-releases/master/</url>
@@ -95,11 +90,6 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>edu.cmu.lti.oaqa.aml</groupId>
-      <artifactId>aml</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>edu.cmu.lti.oaqa.core</groupId>
       <artifactId>baseqa</artifactId>
       <version>2.0.1</version>
@@ -145,11 +135,6 @@
       <groupId>org.jgrapht</groupId>
       <artifactId>jgrapht-core</artifactId>
       <version>0.9.1</version>
-    </dependency>
-    <dependency>
-      <groupId>cc.mallet</groupId>
-      <artifactId>mallet</artifactId>
-      <version>2.0.7</version>
     </dependency>
     <dependency>
       <groupId>net.sf.meka</groupId>
