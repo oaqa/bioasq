@@ -57,6 +57,7 @@ The system also depends on other types of resources, including [`dictionaries`](
 
 - Update Lucene from version 5.5.1 to 6.2.1, which results in change of default similarity.
 - Update skr-webapi from version 0.0.4 to 0.0.6, due to an upstream API update to version 2.3.
+- Update uts-api from version 0.0.2 to 0.0.3, due to an upstream API update.
 - Bug fixes
 
 

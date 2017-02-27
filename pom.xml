@@ -98,7 +98,7 @@
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio</groupId>
       <artifactId>uts-api</artifactId>
-      <version>0.0.2</version>
+      <version>0.0.3</version>
     </dependency>
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio</groupId>
