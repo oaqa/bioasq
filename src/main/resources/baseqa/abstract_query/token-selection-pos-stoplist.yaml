@@ -1,4 +1,4 @@
-inherit: baseqa.aquery.token-selection-pos
+inherit: baseqa.abstract_query.token-selection-pos
 
 stoplist-path: /dictionaries/stoplist.txt
 pos-tags-path: /dictionaries/pos-tags.txt

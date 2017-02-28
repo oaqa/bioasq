@@ -40,10 +40,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -269,7 +266,7 @@ public class LuceneDocumentScorer extends AbstractScorer<Document> {
     } catch (InterruptedException e) {
       throw new AnalysisEngineProcessException(e);
     }
-    confs = uri2conf2score.columnKeySet();
+    confs = new HashSet<>(uri2conf2score.columnKeySet()); // to avoid ConcurrentModificationException
   }
 
   private void searchInField(String queryString, String field, String conf)

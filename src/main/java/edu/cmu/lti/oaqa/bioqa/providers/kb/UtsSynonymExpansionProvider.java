@@ -65,6 +65,8 @@ public class UtsSynonymExpansionProvider extends ConfigurableProvider
 
   private Integer timeout;
 
+  private static final int MAX_RETRY = 5;
+
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
           throws ResourceInitializationException {
@@ -150,7 +152,19 @@ public class UtsSynonymExpansionProvider extends ConfigurableProvider
 
   private String getSingleUseTicket()
           throws gov.nih.nlm.uts.webservice.security.UtsFault_Exception {
-    return securityService.getProxyTicket(grantTicket, service);
+    int retries = 0;
+    while (true) {
+      try {
+        return securityService.getProxyTicket(grantTicket, service);
+      } catch (gov.nih.nlm.uts.webservice.security.UtsFault_Exception e) {
+        if (++retries == MAX_RETRY) throw e;
+        try {
+          Thread.sleep(5000);
+        } catch (InterruptedException e1) {
+          e1.printStackTrace();
+        }
+      }
+    }
   }
 
   public static void main(String[] args) throws Exception {

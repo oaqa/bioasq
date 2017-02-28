@@ -76,6 +76,8 @@ public class UtsConceptSearchProvider extends ConfigurableProvider
 
   private static final String FINDER_TARGET = "atom";
 
+  private static final int MAX_RETRY = 5;
+
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
           throws ResourceInitializationException {
@@ -171,7 +173,19 @@ public class UtsConceptSearchProvider extends ConfigurableProvider
 
   private String getSingleUseTicket()
           throws gov.nih.nlm.uts.webservice.security.UtsFault_Exception {
-    return securityService.getProxyTicket(grantTicket, service);
+    int retries = 0;
+    while (true) {
+      try {
+        return securityService.getProxyTicket(grantTicket, service);
+      } catch (gov.nih.nlm.uts.webservice.security.UtsFault_Exception e) {
+        if (++retries == MAX_RETRY) throw e;
+        try {
+          Thread.sleep(5000);
+        } catch (InterruptedException e1) {
+          e1.printStackTrace();
+        }
+      }
+    }
   }
 
   private static gov.nih.nlm.uts.webservice.finder.Psf createFinderPsf(int hits) {

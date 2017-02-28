@@ -112,7 +112,7 @@ public class LuceneInMemorySentenceRetrievalExecutor extends JCasAnnotator_ImplB
     // create lucene documents for all sentences in all sections
     Map<Integer, Passage> hash2passage = TypeUtil.getRankedPassages(jcas).stream()
             .flatMap(sec -> RetrievalUtil.extractSentences(jcas, sec, chunker).stream())
-            .collect(toMap(TypeUtil::hash, Function.identity()));
+            .collect(toMap(TypeUtil::hash, Function.identity(), (x, y) -> y));
     List<Document> luceneDocs = hash2passage.values().stream()
             .map(RetrievalUtil::createLuceneDocument).collect(toList());
     // create lucene index
@@ -129,7 +129,6 @@ public class LuceneInMemorySentenceRetrievalExecutor extends JCasAnnotator_ImplB
       IndexSearcher searcher = new IndexSearcher(reader);
       String queryString = queryStringConstructor.construct(aquery);
       System.out.println("  - Search for query: " + queryString);
-      parser.createBooleanQuery("title", queryString);
       Query query = parser.parse(queryString);
       ScoreDoc[] scoreDocs = searcher.search(query, hits).scoreDocs;
       for (ScoreDoc scoreDoc : scoreDocs) {
