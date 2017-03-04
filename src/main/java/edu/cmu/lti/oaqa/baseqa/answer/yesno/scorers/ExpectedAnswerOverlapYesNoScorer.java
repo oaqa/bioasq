@@ -24,6 +24,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -49,6 +51,8 @@ public class ExpectedAnswerOverlapYesNoScorer extends ConfigurableProvider imple
 
   private String viewNamePrefix;
 
+  private static final Logger LOG = LoggerFactory.getLogger(ExpectedAnswerOverlapYesNoScorer.class);
+
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
           throws ResourceInitializationException {
@@ -72,7 +76,7 @@ public class ExpectedAnswerOverlapYesNoScorer extends ConfigurableProvider imple
             .map(ConceptMention::getConcept).collect(toSet());
     Set<String> expectedAnswerNames = lastConcepts.stream().map(TypeUtil::getConceptNames).flatMap(
             Collection::stream).map(String::toLowerCase).collect(toSet());
-    System.out.println("Expected answer names: " + expectedAnswerNames);
+    LOG.info("Expected answer names: {}", expectedAnswerNames);
     List<JCas> views = ViewType.listViews(jcas, viewNamePrefix);
     List<Integer> containsExpectedAnswerNames = new ArrayList<>();
     List<Integer> containsLastConcepts = new ArrayList<>();

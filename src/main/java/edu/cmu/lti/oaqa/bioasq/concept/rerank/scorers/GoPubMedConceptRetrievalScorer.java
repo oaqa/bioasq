@@ -35,6 +35,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -75,6 +77,8 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
   private Table<String, String, Integer> uri2conf2rank;
 
   private Set<String> confs;
+
+  private static final Logger LOG = LoggerFactory.getLogger(GoPubMedConceptRetrievalScorer.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -131,7 +135,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     ExecutorService es = Executors.newCachedThreadPool();
     // execute against all tokens
     String concatenatedTokens = String.join(" ", tokens);
-    System.out.println(" - Query String: " + concatenatedTokens);
+    LOG.debug("Query string: {}", concatenatedTokens);
     for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
       es.execute(() -> {
         try {
@@ -147,7 +151,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     // execute against concatenated concept names
     String concatenatedConceptNames = String
             .join(" ", Iterables.concat(wIdConceptNames, woIdConceptNames));
-    System.out.println(" - Query String: " + concatenatedConceptNames);
+    LOG.debug("Query string: {}", concatenatedConceptNames);
     for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
       es.execute(() -> {
         try {
@@ -162,7 +166,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     }
     // execute against concatenated concept mentions
     String concatenatedCmentions = String.join(" ", cmentionNames);
-    System.out.println(" - Query String: " + concatenatedCmentions);
+    LOG.debug("Query string: {}", concatenatedCmentions);
     for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
       es.execute(() -> {
         try {
@@ -177,7 +181,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     }
     // execute against each concept name whose has an ID
     for (String conceptName : wIdConceptNames) {
-      System.out.println(" - Query String: " + conceptName);
+      LOG.debug("Query string: {}", conceptName);
       for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
         es.execute(() -> {
           try {
@@ -193,7 +197,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     }
     // execute against each concept name whose has no ID
     for (String conceptName : woIdConceptNames) {
-      System.out.println(" - Query String: " + conceptName);
+      LOG.debug("Query string: {}", conceptName);
       for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
         es.execute(() -> {
           try {
@@ -209,7 +213,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     }
     // execute against each concept mention
     for (String cmentionName : cmentionNames) {
-      System.out.println(" - Query String: " + cmentionName);
+      LOG.debug("Query string: {}", cmentionName);
       for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
         es.execute(() -> {
           try {
@@ -226,7 +230,7 @@ public class GoPubMedConceptRetrievalScorer extends AbstractScorer<ConceptSearch
     es.shutdown();
     try {
       if (!es.awaitTermination(timeout, TimeUnit.MINUTES)) {
-        System.out.println("Timeout occurs for one or some concept retrieval service.");
+        LOG.warn("Timeout occurs for one or some concept retrieval services.");
       }
     } catch (InterruptedException e) {
       throw new AnalysisEngineProcessException(e);

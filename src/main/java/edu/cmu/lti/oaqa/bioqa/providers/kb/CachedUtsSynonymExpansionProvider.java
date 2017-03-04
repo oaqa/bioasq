@@ -27,6 +27,8 @@ import org.apache.uima.resource.impl.CustomResourceSpecifier_impl;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
@@ -54,6 +56,9 @@ public class CachedUtsSynonymExpansionProvider extends ConfigurableProvider
   private DB db;
 
   private HTreeMap<String, Set<String>> id2synonyms;
+
+  private static final Logger LOG = LoggerFactory
+          .getLogger(CachedUtsSynonymExpansionProvider.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -89,8 +94,7 @@ public class CachedUtsSynonymExpansionProvider extends ConfigurableProvider
     Map<String, Set<String>> ret = ids.stream().filter(id2synonyms::containsKey)
             .collect(Collectors.toMap(Function.identity(), id2synonyms::get));
     Set<String> mids = Sets.difference(ImmutableSet.copyOf(ids), ret.keySet());
-    System.out.println("Retrieved " + ret.size() + " from cache, requesting " + mids.size()
-            + " missing concepts.");
+    LOG.info("Retrieved {} from cache, requesting {} missing concepts.", ret.size(), mids.size());
     Map<String, Set<String>> mids2synonysm = delegate.getSynonyms(mids);
     ret.putAll(mids2synonysm);
     id2synonyms.putAll(mids2synonysm);

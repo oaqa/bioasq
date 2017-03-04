@@ -25,6 +25,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +40,8 @@ import java.util.List;
 public class QuestionConceptRecognizer extends JCasAnnotator_ImplBase {
 
   private ConceptProvider conceptProvider;
+
+  private static final Logger LOG = LoggerFactory.getLogger(QuestionConceptRecognizer.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -53,8 +57,10 @@ public class QuestionConceptRecognizer extends JCasAnnotator_ImplBase {
     concepts.forEach(Concept::addToIndexes);
     concepts.stream().map(TypeUtil::getConceptMentions).flatMap(Collection::stream)
             .forEach(ConceptMention::addToIndexes);
-    System.out.println("Identified Concepts:");
-    concepts.stream().map(c -> " - " + TypeUtil.toString(c)).forEach(System.out::println);
+    if (LOG.isInfoEnabled()) {
+      LOG.info("Identified concepts:");
+      concepts.forEach(c -> LOG.info(" - {}", TypeUtil.toString(c)));
+    }
   }
 
 }

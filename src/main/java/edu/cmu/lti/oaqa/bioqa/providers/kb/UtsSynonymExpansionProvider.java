@@ -37,6 +37,8 @@ import gov.nih.nlm.uts.webservice.content.UtsWsContentControllerImplService;
 import gov.nih.nlm.uts.webservice.security.UtsFault_Exception;
 import gov.nih.nlm.uts.webservice.security.UtsWsSecurityController;
 import gov.nih.nlm.uts.webservice.security.UtsWsSecurityControllerImplService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This {@link SynonymExpansionProvider} uses <a href="https://uts.nlm.nih.gov/">UMLS Terminology
@@ -66,6 +68,8 @@ public class UtsSynonymExpansionProvider extends ConfigurableProvider
   private Integer timeout;
 
   private static final int MAX_RETRY = 5;
+
+  private static final Logger LOG = LoggerFactory.getLogger(UtsSynonymExpansionProvider.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -135,7 +139,7 @@ public class UtsSynonymExpansionProvider extends ConfigurableProvider
     es.shutdown();
     try {
       if (!es.awaitTermination(timeout, TimeUnit.MINUTES)) {
-        System.out.println("Timeout occurs for one or some concept retrieval service.");
+        LOG.warn("Timeout occurs for one or some concept retrieval services.");
       }
     } catch (InterruptedException e) {
       throw new AnalysisEngineProcessException(e);

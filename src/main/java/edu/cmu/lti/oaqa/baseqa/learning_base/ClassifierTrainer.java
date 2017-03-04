@@ -26,6 +26,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -81,6 +83,8 @@ public class ClassifierTrainer<T> extends JCasAnnotator_ImplBase {
 
   private ClassifierProvider.ResampleType resampleType;
 
+  private static final Logger LOG = LoggerFactory.getLogger(ClassifierTrainer.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -134,8 +138,10 @@ public class ClassifierTrainer<T> extends JCasAnnotator_ImplBase {
 
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
-    System.out.println("Total true count: " + Y.stream().filter("true"::equals).count());
-    System.out.println("Total false count: " + Y.stream().filter("false"::equals).count());
+    if (LOG.isInfoEnabled()) {
+      LOG.info("Total true count: {}", Y.stream().filter("true"::equals).count());
+      LOG.info("Total false count: {}", Y.stream().filter("false"::equals).count());
+    }
     super.collectionProcessComplete();
     if (cvPredictFile != null) {
       try (BufferedWriter bw = Files.newWriter(new File(cvPredictFile), Charsets.UTF_8)) {

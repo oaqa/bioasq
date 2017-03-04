@@ -41,6 +41,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -80,6 +82,8 @@ public class LogRegDocumentReranker extends JCasAnnotator_ImplBase {
   private QueryParser parser;
 
   private double[] docFeatWeights;
+
+  private static final Logger LOG = LoggerFactory.getLogger(LogRegDocumentReranker.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -122,7 +126,7 @@ public class LogRegDocumentReranker extends JCasAnnotator_ImplBase {
     }
     AbstractQuery aquery = TypeUtil.getAbstractQueries(jcas).iterator().next();
     String queryString = queryStringConstructor.construct(aquery);
-    System.out.println("  - Search for query: " + queryString);
+    LOG.info("Search for query: {}", queryString);
     Map<String, Float> id2titleScore = new HashMap<>();
     Map<String, Float> id2textScore = new HashMap<>();
     try (IndexReader reader = DirectoryReader.open(index)) {
@@ -130,13 +134,13 @@ public class LogRegDocumentReranker extends JCasAnnotator_ImplBase {
       searcher.setSimilarity(new BM25Similarity());
       Query titleQuery = parser.createBooleanQuery("title", queryString);
       ScoreDoc[] titleScoreDocs = searcher.search(titleQuery, hits).scoreDocs;
-      System.out.println("  - Title matches: " + titleScoreDocs.length);
+      LOG.info(" - Title matches: {}", titleScoreDocs.length);
       for (ScoreDoc titleScoreDoc : titleScoreDocs) {
         id2titleScore.put(searcher.doc(titleScoreDoc.doc).get("id"), titleScoreDoc.score);
       }
       Query textQuery = parser.createBooleanQuery("text", queryString);
       ScoreDoc[] textScoreDocs = searcher.search(textQuery, hits).scoreDocs;
-      System.out.println("  - Text matches: " + textScoreDocs.length);
+      LOG.info(" - Text matches: {}", textScoreDocs.length);
       for (ScoreDoc textScoreDoc : textScoreDocs) {
         id2textScore.put(searcher.doc(textScoreDoc.doc).get("id"), textScoreDoc.score);
       }

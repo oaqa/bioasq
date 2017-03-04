@@ -28,6 +28,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.CasCopier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -58,12 +60,14 @@ public class AlternateAnswerYesNoScorer extends ConfigurableProvider implements 
 
   private AnalysisEngine[] aes;
 
+  private static final Logger LOG = LoggerFactory.getLogger(AlternateAnswerYesNoScorer.class);
+
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
           throws ResourceInitializationException {
     super.initialize(aSpecifier, aAdditionalParams);
     String pipeline = String.class.cast(getParameterValue("factoid-pipeline"));
-    System.out.println(pipeline);
+    LOG.trace("Factoid pipeline: {}", pipeline);
     aes = BaseExperimentBuilder.createAnnotators(pipeline);
     return true;
   }
@@ -113,8 +117,8 @@ public class AlternateAnswerYesNoScorer extends ConfigurableProvider implements 
         features.put("expected-answer-rank-ratio", 1.0 - rank / alternateAnswerCount);
         features.put("expected-answer-score", score);
         features.put("expected-answer-score-ratio", score / maxScore);
-        System.out.println("Expected answer is ranked at " + rankBin + "/" + alternateAnswerCount +
-                " with score " + score + "/" + maxScore);
+        LOG.info("Expected answer is ranked at {}/{} with score {}/{}", rankBin,
+                alternateAnswerCount, score, maxScore);
         break;
       }
     }

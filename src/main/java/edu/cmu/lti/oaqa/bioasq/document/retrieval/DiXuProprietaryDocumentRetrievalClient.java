@@ -25,6 +25,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -48,6 +50,9 @@ public class DiXuProprietaryDocumentRetrievalClient extends JCasAnnotator_ImplBa
 
   private String uriPrefix;
 
+  private static final Logger LOG = LoggerFactory
+          .getLogger(DiXuProprietaryDocumentRetrievalClient.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -60,7 +65,7 @@ public class DiXuProprietaryDocumentRetrievalClient extends JCasAnnotator_ImplBa
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     String query = TypeUtil.getQuestion(jcas).getText();
     List<Document> documents = new ArrayList<>();
-    System.out.println("Attempting to connect to host " + host + " on port " + port + ".");
+    LOG.info("Attempting to connect to host {} on port {}.", host, port);
     try {
       Socket echoSocket = new Socket(host, port);
       PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);

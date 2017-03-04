@@ -28,6 +28,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -69,6 +71,8 @@ public class YesNoAnswerTrainer extends JCasAnnotator_ImplBase {
 
   private ClassifierProvider.ResampleType resampleType;
 
+  private static final Logger LOG = LoggerFactory.getLogger(YesNoAnswerTrainer.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -96,7 +100,7 @@ public class YesNoAnswerTrainer extends JCasAnnotator_ImplBase {
     // add to training data
     X.add(features);
     Answer answer = TypeUtil.getRankedAnswers(ViewType.getGsView(jcas)).get(0);
-    System.out.println("answer text: " + answer.getText());
+    LOG.trace("Answer text: {}", answer.getText());
     Y.add(answer.getText());
     if (cvPredictFile != null) {
       qids.add(TypeUtil.getQuestion(jcas).getId());
@@ -106,9 +110,9 @@ public class YesNoAnswerTrainer extends JCasAnnotator_ImplBase {
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     long yesCount = Y.stream().filter(y -> y.equals("yes")).count();
-    System.out.println("Total yes: " + yesCount);
+    LOG.info("Total yes: {}", yesCount);
     long noCount = Y.stream().filter(y -> y.equals("no")).count();
-    System.out.println("Total no: " + noCount);
+    LOG.info("Total no: {}", noCount);
     super.collectionProcessComplete();
     if (cvPredictFile != null) {
       try (BufferedWriter bw = Files.newWriter(new File(cvPredictFile), Charsets.UTF_8)) {
@@ -123,9 +127,8 @@ public class YesNoAnswerTrainer extends JCasAnnotator_ImplBase {
           if (result < 0.5 && y.equals("no")) correctNoCount++;
         }
         bw.close();
-        System.out.println("Cross validation accuracy: ");
-        System.out.println(" - Yes: " + (double) correctYesCount / yesCount);
-        System.out.println(" - No: " + (double) correctNoCount / noCount);
+        LOG.info("Cross validation accuracy: \n - Yes: {}\n - No: ",
+                (double) correctYesCount / yesCount, (double) correctNoCount / noCount);
       } catch (IOException e) {
         throw new AnalysisEngineProcessException(e);
       }

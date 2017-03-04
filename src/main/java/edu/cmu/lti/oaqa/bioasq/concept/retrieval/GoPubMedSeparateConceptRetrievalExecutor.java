@@ -31,6 +31,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -73,7 +75,8 @@ public class GoPubMedSeparateConceptRetrievalExecutor extends JCasAnnotator_Impl
 
   private int limit;
 
-  private static CharMatcher LD = CharMatcher.JAVA_LETTER_OR_DIGIT;
+  private static final Logger LOG = LoggerFactory
+          .getLogger(GoPubMedSeparateConceptRetrievalExecutor.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -102,7 +105,7 @@ public class GoPubMedSeparateConceptRetrievalExecutor extends JCasAnnotator_Impl
     for (QueryConcept qconcept : qconcepts) {
       String queryString = bopQueryStringConstructor.formatQueryConcept(qconcept)
               .replaceAll("[^A-Za-z0-9_\\-\"]+", " ");
-      System.out.println("Query String: " + queryString);
+      LOG.info("Query string: {}", queryString);
       for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
         es.execute(() -> {
           try {
@@ -117,7 +120,7 @@ public class GoPubMedSeparateConceptRetrievalExecutor extends JCasAnnotator_Impl
     es.shutdown();
     try {
       if (!es.awaitTermination(timeout, TimeUnit.MINUTES)) {
-        System.out.println("Timeout occurs for one or some concept retrieval service.");
+        LOG.warn("Timeout occurs for one or some concept retrieval services.");
       }
     } catch (InterruptedException e) {
       throw new AnalysisEngineProcessException(e);
@@ -126,8 +129,10 @@ public class GoPubMedSeparateConceptRetrievalExecutor extends JCasAnnotator_Impl
             .collect(groupingBy(ConceptSearchResult::getSearchId));
     for (Map.Entry<String, List<ConceptSearchResult>> entry : onto2concepts.entrySet()) {
       List<ConceptSearchResult> results = entry.getValue();
-      System.out.println("Retrieved " + results.size() + " concepts from " + entry.getKey());
-      results.stream().limit(10).forEach(c -> System.out.println(" - " + TypeUtil.toString(c)));
+      LOG.info("Retrieved {} concepts from {}", results.size(), entry.getKey());
+      if (LOG.isDebugEnabled()) {
+        results.stream().limit(10).forEach(c -> LOG.debug(" - {}", TypeUtil.toString(c)));
+      }
     }
     TypeUtil.rankedSearchResultsByScore(concepts, limit).forEach(ConceptSearchResult::addToIndexes);
   }

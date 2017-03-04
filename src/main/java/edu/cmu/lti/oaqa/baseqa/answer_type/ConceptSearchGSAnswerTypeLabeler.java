@@ -23,6 +23,8 @@ import edu.cmu.lti.oaqa.util.TypeUtil;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -47,6 +49,8 @@ public class ConceptSearchGSAnswerTypeLabeler extends GSAnswerTypeLabeler {
 
   private ConceptSearchProvider conceptSearchProvider;
 
+  private static final Logger LOG = LoggerFactory.getLogger(ConceptSearchGSAnswerTypeLabeler.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -59,10 +63,9 @@ public class ConceptSearchGSAnswerTypeLabeler extends GSAnswerTypeLabeler {
   @Override
   protected void annotateConceptTypesForGSAnswers(List<QuestionAnswerTypes> qats)
           throws AnalysisEngineProcessException {
-    long answerCount = qats.stream().map(QuestionAnswerTypes::getAnswers).flatMap(Set::stream)
-            .count();
-    System.out.println(
-            "Fetch labels for " + qats.size() + " questions (" + answerCount + " answers).");
+    long answerCount = qats.stream().map(QuestionAnswerTypes::getAnswers).mapToLong(Set::size)
+            .sum();
+    LOG.info("Fetch labels for {} questions ({} answers).", qats.size(), answerCount);
     for (QuestionAnswerTypes qat : qats) {
       for (String answer : qat.getAnswers()) {
         conceptSearchProvider.search(answer).ifPresent(concept -> {

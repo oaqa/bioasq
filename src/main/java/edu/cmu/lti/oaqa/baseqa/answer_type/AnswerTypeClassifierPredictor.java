@@ -28,6 +28,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,6 +62,8 @@ public class AnswerTypeClassifierPredictor extends JCasAnnotator_ImplBase {
 
   private int limit;
 
+  private static final Logger LOG = LoggerFactory.getLogger(AnswerTypeClassifierPredictor.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -91,7 +95,7 @@ public class AnswerTypeClassifierPredictor extends JCasAnnotator_ImplBase {
             .forEachOrdered(LexicalAnswerType::addToIndexes);
     String question = TypeUtil.getQuestion(jcas).getText().trim().replaceAll("\\s", " ")
             .replaceAll("–", "-").replaceAll("’", "'");
-    System.out.println("Found answer type: " + lats);
+    LOG.info("Found answer type: {}", lats);
     // print to file if exists
     if (predictFileWriter != null) {
       try {

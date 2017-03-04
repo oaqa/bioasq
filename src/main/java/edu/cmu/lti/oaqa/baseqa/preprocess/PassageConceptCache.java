@@ -30,6 +30,8 @@ import edu.cmu.lti.oaqa.baseqa.util.ProviderCache;
 import edu.cmu.lti.oaqa.baseqa.util.UimaContextHelper;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -59,6 +61,8 @@ public class PassageConceptCache extends JCasAnnotator_ImplBase {
 
   private List<String> texts;
 
+  private static final Logger LOG = LoggerFactory.getLogger(PassageConceptCache.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -77,13 +81,13 @@ public class PassageConceptCache extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
-    System.out.println("QID: " + TypeUtil.getQuestion(jcas).getId());
+    LOG.info("QID: {}", TypeUtil.getQuestion(jcas).getId());
     Collection<Passage> passages = TypeUtil.getRankedPassages(jcas);
     passages.stream().map(Passage::getText).forEachOrdered(texts::add);
     if (texts.size() > batchSize) {
       try {
         ConceptCacheUtil.cacheTexts(texts, conceptProviders, synonymExpansionProviders);
-      } catch (Exception e) {
+      } catch (Exception ignored) {
       } finally {
         texts.clear();
       }

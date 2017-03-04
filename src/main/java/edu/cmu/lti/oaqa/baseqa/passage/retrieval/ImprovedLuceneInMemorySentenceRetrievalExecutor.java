@@ -51,6 +51,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -84,6 +86,9 @@ public class ImprovedLuceneInMemorySentenceRetrievalExecutor extends JCasAnnotat
   //private static GoldQuestions questions;
 
   //private static HashMap<String, HashSet<Snippet>> gold;
+
+  private static final Logger LOG = LoggerFactory
+          .getLogger(ImprovedLuceneInMemorySentenceRetrievalExecutor.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -141,11 +146,11 @@ public class ImprovedLuceneInMemorySentenceRetrievalExecutor extends JCasAnnotat
       IndexSearcher searcher = new IndexSearcher(reader);
       String queryString = queryStringConstructor.construct(aquery).replace("\"", " ")
               .replace("/", " ").replace("[", " ").replace("]", " ");
-      System.out.println("Search for query: " + queryString);
+      LOG.info("Search for query: {}", queryString);
 
       // construct the query
       Query query = parser.parse(queryString);
-      System.out.println(query.toString());
+      LOG.trace(query.toString());
       searcher.setSimilarity(new BM25Similarity());
       ScoreDoc[] scoreDocs = searcher.search(query, hits).scoreDocs;
       for (ScoreDoc scoreDoc : scoreDocs) {
@@ -157,7 +162,7 @@ public class ImprovedLuceneInMemorySentenceRetrievalExecutor extends JCasAnnotat
     } catch (IOException | ParseException e) {
       throw new AnalysisEngineProcessException(e);
     }
-    System.out.println("The size of Returned Sentences:\t" + hash2score.size());
+    LOG.info("The size of Returned Sentences: {}", hash2score.size());
     // add to CAS
     hash2score.entrySet().stream().map(entry -> {
       Passage passage = hash2passage.get(entry.getKey());
@@ -282,7 +287,7 @@ public class ImprovedLuceneInMemorySentenceRetrievalExecutor extends JCasAnnotat
       IndexSearcher searcher = new IndexSearcher(reader);
       String queryString = queryStringConstructor.construct(aquery).replace("\"", " ")
               .replace("/", " ").replace("[", " ").replace("]", " ");
-      System.out.println("Search for query: " + queryString);
+      LOG.info("Search for query: {}", queryString);
 
       // construct the query
       Query query = parser.parse(queryString);

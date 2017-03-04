@@ -19,6 +19,8 @@ import com.google.common.collect.*;
 import com.google.common.io.Files;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +47,8 @@ import static java.util.stream.Collectors.*;
 public interface ClassifierProvider extends Resource {
 
   enum ResampleType {DOWN, UP, NONE}
+
+  Logger LOG = LoggerFactory.getLogger(ClassifierProvider.class);
 
   Map<String, Double> infer(Map<String, Double> features) throws AnalysisEngineProcessException;
 
@@ -132,7 +136,7 @@ public interface ClassifierProvider extends Resource {
     for (List<Integer> cvTestIndexes : Lists.partition(indexList, nfolds)) {
       List<Map<String, Double>> cvTrainX = new ArrayList<>();
       List<Collection<String>> cvTrainY = new ArrayList<>();
-      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).stream().forEach(cvTrainIndex -> {
+      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).forEach(cvTrainIndex -> {
         cvTrainX.add(X.get(cvTrainIndex));
         cvTrainY.add(Y.get(cvTrainIndex));
       });
@@ -156,10 +160,10 @@ public interface ClassifierProvider extends Resource {
             .collect(toList());
     int fold = 1;
     for (List<Integer> cvTestIndexes : Lists.partition(indexList, nfolds)) {
-      System.out.println("Train Predict Fold " + fold++);
+      LOG.info("Train Predict Fold {}", fold++);
       List<Map<String, Double>> cvTrainX = new ArrayList<>();
       List<Collection<String>> cvTrainY = new ArrayList<>();
-      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).stream().forEach(cvTrainIndex -> {
+      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).forEach(cvTrainIndex -> {
         cvTrainX.add(X.get(cvTrainIndex));
         cvTrainY.add(Y.get(cvTrainIndex));
       });
@@ -181,10 +185,10 @@ public interface ClassifierProvider extends Resource {
     List<Double> ret = IntStream.range(0, X.size()).mapToObj(i -> Double.NaN).collect(toList());
     int fold = 1;
     for (List<Integer> cvTestIndexes : Lists.partition(indexList, nfolds)) {
-      System.out.println("Train Predict Fold " + fold++);
+      LOG.info("Train Predict Fold {}", fold++);
       List<Map<String, Double>> cvTrainX = new ArrayList<>();
       List<String> cvTrainY = new ArrayList<>();
-      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).stream().forEach(cvTrainIndex -> {
+      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).forEach(cvTrainIndex -> {
         cvTrainX.add(X.get(cvTrainIndex));
         cvTrainY.add(Y.get(cvTrainIndex));
       });
@@ -208,7 +212,7 @@ public interface ClassifierProvider extends Resource {
     for (List<Integer> cvTestIndexes : Lists.partition(indexList, nfolds)) {
       List<Map<String, Double>> cvTrainX = new ArrayList<>();
       List<String> cvTrainY = new ArrayList<>();
-      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).stream().forEach(cvTrainIndex -> {
+      Sets.difference(indexes, new HashSet<>(cvTestIndexes)).forEach(cvTrainIndex -> {
         cvTrainX.add(X.get(cvTrainIndex));
         cvTrainY.add(Y.get(cvTrainIndex));
       });

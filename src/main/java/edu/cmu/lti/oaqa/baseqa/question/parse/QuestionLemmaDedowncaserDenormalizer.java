@@ -25,6 +25,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -41,6 +43,9 @@ import static java.lang.Character.toUpperCase;
 public class QuestionLemmaDedowncaserDenormalizer extends JCasAnnotator_ImplBase {
 
   private EnglishMPAnalyzer mpAnalyzer;
+
+  private static final Logger LOG = LoggerFactory
+          .getLogger(QuestionLemmaDedowncaserDenormalizer.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -59,7 +64,7 @@ public class QuestionLemmaDedowncaserDenormalizer extends JCasAnnotator_ImplBase
     } );
     // try to de-downcase for proper nouns
     tokens.stream().filter(token -> equalsPosTag("NNP", token))
-            .forEach(token -> setLemmaByText(token));
+            .forEach(QuestionLemmaDedowncaserDenormalizer::setLemmaByText);
     tokens.stream().filter(token -> equalsPosTag("NNPS", token)).forEach(token -> {
       char[] tokenText = token.getCoveredText().toCharArray();
       char[] lemma = token.getLemmaForm().toCharArray();
@@ -71,12 +76,14 @@ public class QuestionLemmaDedowncaserDenormalizer extends JCasAnnotator_ImplBase
     } );
     // de-normalization
     tokens.stream().filter(token -> equalsPosTag("CD", token))
-            .forEach(token -> setLemmaByText(token));
+            .forEach(QuestionLemmaDedowncaserDenormalizer::setLemmaByText);
     tokens.stream().filter(token -> CharMatcher.JAVA_DIGIT.matchesAnyOf(token.getCoveredText()))
-            .forEach(token -> setLemmaByText(token));
+            .forEach(QuestionLemmaDedowncaserDenormalizer::setLemmaByText);
 
-    tokens.forEach(token -> System.out.println(
-            token.getCoveredText() + " " + token.getLemmaForm() + " " + token.getPartOfSpeech()));
+    if (LOG.isTraceEnabled()) {
+      tokens.forEach(token -> LOG.trace("{} {} {}", token.getCoveredText(), token.getLemmaForm(),
+              token.getPartOfSpeech()));
+    }
   }
 
   private static boolean equalsPosTag(String posTag, Token token) {

@@ -35,6 +35,8 @@ import edu.cmu.lti.oaqa.baseqa.providers.ml.classifiers.FeatureConstructorProvid
 import edu.cmu.lti.oaqa.baseqa.util.ProviderCache;
 import edu.cmu.lti.oaqa.baseqa.util.UimaContextHelper;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static java.util.stream.Collectors.*;
 
@@ -71,6 +73,8 @@ public class AnswerTypeClassifierTrainer extends JCasAnnotator_ImplBase {
   private int limit;
 
   private static ClassifierProvider.ResampleType RESAMPLE_TYPE = ClassifierProvider.ResampleType.NONE;
+
+  private static final Logger LOG = LoggerFactory.getLogger(AnswerTypeClassifierPredictor.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -141,13 +145,13 @@ public class AnswerTypeClassifierTrainer extends JCasAnnotator_ImplBase {
           bw.write(qid + "\t" + predLabels.stream().collect(joining(";")) + "\n");
         }
         f1s.stream().mapToDouble(Double::doubleValue).average()
-                .ifPresent(f1 -> System.out.println("Micro F1: " + f1));
+                .ifPresent(f1 -> LOG.info("Micro F1: {}", f1));
         bw.close();
       } catch (IOException e) {
         throw new AnalysisEngineProcessException(e);
       }
     }
-    System.out.println("Train Classifier");
+    LOG.info("Train Classifier");
     // changed CV to false, as a "micro f1" will be calculated if the cvPredictFile is specifie
     classifier.trainMultiLabel(trainX, trainY, RESAMPLE_TYPE, false);
   }

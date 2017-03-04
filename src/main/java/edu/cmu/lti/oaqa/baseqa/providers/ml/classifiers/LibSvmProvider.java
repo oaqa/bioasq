@@ -23,6 +23,8 @@ import org.apache.commons.codec.Charsets;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +69,8 @@ public class LibSvmProvider extends ConfigurableProvider implements ClassifierPr
   private svm_model model;
 
   private svm_parameter param;
+
+  private static final Logger LOG = LoggerFactory.getLogger(LibSvmProvider.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -157,8 +161,8 @@ public class LibSvmProvider extends ConfigurableProvider implements ClassifierPr
     assert X.size() == Y.size();
     int dataCount = X.size();
     int featCount = fid2feat.size();
-    System.out.println("Training for " + dataCount + " instances, " + featCount + " features, "
-            + lid2label.size());
+    LOG.info("Training for {} instances, {} features, {} labels.", dataCount, featCount,
+            lid2label.size());
     prob.l = dataCount;
     prob.x = X.stream().map(x -> IntStream.range(1, featCount + 1).mapToObj(j -> {
       svm_node node = new svm_node();

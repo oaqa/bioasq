@@ -26,6 +26,8 @@ import com.google.common.collect.ImmutableSet;
 import edu.cmu.lti.oaqa.type.nlp.Token;
 import edu.cmu.lti.oaqa.util.TypeFactory;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -50,6 +52,8 @@ public class QuestionFocusExtractor extends JCasAnnotator_ImplBase {
 
   private static final Set<String> NOUN_POS_TAGS = ImmutableSet.of("NN", "NNP", "NNS", "NNPS");
 
+  private static final Logger LOG = LoggerFactory.getLogger(QuestionFocusExtractor.class);
+
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     List<Token> tokens = TypeUtil.getOrderedTokens(jcas);
@@ -61,7 +65,7 @@ public class QuestionFocusExtractor extends JCasAnnotator_ImplBase {
             .filter(token -> NOUN_POS_TAGS.contains(token.getPartOfSpeech()))
             .filter(token -> !DEP_DEP_LABEL.equals(token.getDepLabel())).findFirst()
             .ifPresent(token -> {
-              System.out.println("Found focus: " + token.getLemmaForm());
+              LOG.info("Found focus: {}", token.getLemmaForm());
               TypeFactory.createFocus(jcas, token, token.getLemmaForm()).addToIndexes();
             } );
   }

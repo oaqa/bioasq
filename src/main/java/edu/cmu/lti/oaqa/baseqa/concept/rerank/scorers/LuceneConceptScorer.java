@@ -39,6 +39,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -105,6 +107,8 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
   private Table<String, String, Integer> uri2conf2rank;
 
   private Set<String> confs;
+
+  private static final Logger LOG = LoggerFactory.getLogger(LuceneConceptScorer.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -183,12 +187,12 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     Multimap<String, String> ctypepre2mentions = HashMultimap.create();
     ctypepre2mentions.asMap().entrySet()
             .forEach(e -> ctypepre2mentions.putAll(e.getKey().split(":")[0], e.getValue()));
-    System.out.println("Query Strings");
+    LOG.debug("Query strings");
     ExecutorService service = Executors.newCachedThreadPool();
     // execute against all tokens
     service.submit(() -> {
       String concatTokens = String.join(" ", tokens);
-      System.out.println(" - Concatenated tokens: " + concatTokens);
+      LOG.debug(" - Concatenated tokens: {}", concatTokens);
       for (String field : fields) {
         searchInField(concatTokens, field, "tokens_concatenated@" + field);
       }
@@ -197,7 +201,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     // execute against concatenated concept names
     service.submit(() -> {
       String concatCnames = String.join(" ", ctype2names.values());
-      System.out.println(" - Concatenated concept names: " + concatCnames);
+      LOG.debug(" - Concatenated concept names: {}", concatCnames);
       for (String field : fields) {
         searchInField(concatCnames, field, "cnames_concatenated@" + field);
       }
@@ -206,7 +210,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     // execute against concatenated concept mentions
     service.submit(() -> {
       String concatCmentions = String.join(" ", ctype2mentions.values());
-      System.out.println(" - Concatenated concept mentions: " + concatCmentions);
+      LOG.debug(" - Concatenated concept mentions: {}", concatCmentions);
       for (String field : fields) {
         searchInField(concatCmentions, field, "cmentions_concatenated@" + field);
       }
@@ -215,7 +219,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     // execute against concept names for each concept
     service.submit(() -> {
       for (String cnames : ImmutableSet.copyOf(ctype2names.values())) {
-        System.out.println(" - Concatenated concept names: " + cnames);
+        LOG.debug(" - Concatenated concept names: {}", cnames);
         for (String field : fields) {
           searchInField(cnames, field, "cnames_individual@" + field);
         }
@@ -226,7 +230,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     service.submit(() -> {
       for (String ctype : ctype2names.keySet()) {
         String concatCnames = String.join(" ", ctype2names.get(ctype));
-        System.out.println(" - Concatenated concept names for " + ctype + ": " + concatCnames);
+        LOG.debug(" - Concatenated concept names for {}: {}", ctype, concatCnames);
         for (String field : fields) {
           searchInField(concatCnames, field, "cnames@" + ctype + "@" + field);
         }
@@ -237,7 +241,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     service.submit(() -> {
       for (String ctypepre : ctypepre2names.keySet()) {
         String concatCnames = String.join(" ", ctypepre2names.get(ctypepre));
-        System.out.println(" - Concatenated concept names for " + ctypepre + ": " + concatCnames);
+        LOG.debug(" - Concatenated concept names for {}: {}", ctypepre, concatCnames);
         for (String field : fields) {
           searchInField(concatCnames, field, "cnames@" + ctypepre + "@" + field);
         }
@@ -247,7 +251,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     // execute against concept mentions for each concept
     service.submit(() -> {
       for (String cmentions : ImmutableSet.copyOf(ctype2mentions.values())) {
-        System.out.println(" - Concatenated concept mentions: " + cmentions);
+        LOG.debug(" - Concatenated concept mentions: {}", cmentions);
         for (String field : fields) {
           searchInField(cmentions, field, "cmentions_individual@" + field);
         }
@@ -258,8 +262,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     service.submit(() -> {
       for (String ctype : ctype2mentions.keySet()) {
         String concatCmentions = String.join(" ", ctype2mentions.get(ctype));
-        System.out
-                .println(" - Concatenated concept mentions for " + ctype + ": " + concatCmentions);
+        LOG.debug(" - Concatenated concept mentions for {}: {}", ctype, concatCmentions);
         for (String field : fields) {
           searchInField(concatCmentions, field, "cmentions@" + ctype + "@" + field);
         }
@@ -270,9 +273,7 @@ public class LuceneConceptScorer extends AbstractScorer<ConceptSearchResult> {
     service.submit(() -> {
       for (String ctypepre : ctypepre2mentions.keySet()) {
         String concatCmentions = String.join(" ", ctypepre2mentions.get(ctypepre));
-        System.out
-                .println(" - Concatenated concept mentions for " + ctypepre + ": " +
-                        concatCmentions);
+        LOG.debug(" - Concatenated concept mentions for {}: {}", ctypepre, concatCmentions);
         for (String field : fields) {
           searchInField(concatCmentions, field, "cmentions@" + ctypepre + "@" + field);
         }

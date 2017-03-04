@@ -29,6 +29,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,6 +65,8 @@ public class YesNoAnswerPredictor extends JCasAnnotator_ImplBase {
 
   private Table<String, String, Double> feat2value;
 
+  private static final Logger LOG = LoggerFactory.getLogger(YesNoAnswerPredictor.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -93,7 +97,7 @@ public class YesNoAnswerPredictor extends JCasAnnotator_ImplBase {
       putFeatureValues(qid, answer, features);
     }
     TypeFactory.createAnswer(jcas, Collections.singletonList(answer)).addToIndexes();
-    System.out.println("Predicted answer: " + answer);
+    LOG.info("Predicted answer: {}", answer);
   }
 
   private void putFeatureValues(String qid, String answer, Map<String, Double> features) {

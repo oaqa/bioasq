@@ -21,6 +21,8 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
@@ -48,6 +50,8 @@ public class CachedTmToolConceptProvider extends TmToolConceptProvider
 
   private Map<String, HTreeMap<String, String>> trigger2text2denotations;
 
+  private static final Logger LOG = LoggerFactory.getLogger(CachedTmToolConceptProvider.class);
+
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
           throws ResourceInitializationException {
@@ -72,7 +76,7 @@ public class CachedTmToolConceptProvider extends TmToolConceptProvider
     // find missing indexes and collect texts
     int[] missingIndexes = IntStream.range(0, normalizedTexts.size())
             .filter(i -> mergedDenotationStrings.get(i) == null).toArray();
-    System.out.println(missingIndexes.length + " missing documents at [" + trigger + "].");
+    LOG.info("{} missing documents at [{}].", missingIndexes.length, trigger);
     if (missingIndexes.length > 0) {
       List<String> missingTexts = Arrays.stream(missingIndexes).mapToObj(normalizedTexts::get)
               .collect(toList());

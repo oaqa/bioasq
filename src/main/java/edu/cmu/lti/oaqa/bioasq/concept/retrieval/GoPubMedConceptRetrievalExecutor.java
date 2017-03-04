@@ -29,6 +29,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +67,8 @@ public class GoPubMedConceptRetrievalExecutor extends JCasAnnotator_ImplBase {
 
   private int limit;
 
+  private static final Logger LOG = LoggerFactory.getLogger(GoPubMedConceptRetrievalExecutor.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -88,7 +92,7 @@ public class GoPubMedConceptRetrievalExecutor extends JCasAnnotator_ImplBase {
     AbstractQuery aquery = TypeUtil.getAbstractQueries(jcas).stream().findFirst().get();
     String queryString = bopQueryStringConstructor.construct(aquery)
             .replaceAll("[^A-Za-z0-9_\\-\"]+", " ");
-    System.out.println("Query String: " + queryString);
+    LOG.info("Query string: {}", queryString);
     List<ConceptSearchResult> concepts = Collections.synchronizedList(new ArrayList<>());
     ExecutorService es = Executors.newCachedThreadPool();
     for (BioASQUtil.Ontology ontology : BioASQUtil.Ontology.values()) {
@@ -104,7 +108,7 @@ public class GoPubMedConceptRetrievalExecutor extends JCasAnnotator_ImplBase {
     es.shutdown();
     try {
       if (!es.awaitTermination(timeout, TimeUnit.MINUTES)) {
-        System.out.println("Timeout occurs for one or some concept retrieval service.");
+        LOG.warn("Timeout occurs for one or some concept retrieval services.");
       }
     } catch (InterruptedException e) {
       throw new AnalysisEngineProcessException(e);
@@ -113,8 +117,10 @@ public class GoPubMedConceptRetrievalExecutor extends JCasAnnotator_ImplBase {
             .collect(groupingBy(ConceptSearchResult::getSearchId));
     for (Map.Entry<String, List<ConceptSearchResult>> entry : onto2concepts.entrySet()) {
       List<ConceptSearchResult> results = entry.getValue();
-      System.out.println("Retrieved " + results.size() + " concepts from " + entry.getKey());
-      results.stream().limit(3).forEach(c -> System.out.println(" - " + TypeUtil.toString(c)));
+      LOG.info("Retrieved {} concepts from {}", results.size(), entry.getKey());
+      if (LOG.isDebugEnabled()) {
+        results.stream().limit(3).forEach(c -> LOG.debug(" - {}", TypeUtil.toString(c)));
+      }
     }
     TypeUtil.rankedSearchResultsByScore(concepts, limit).forEach(ConceptSearchResult::addToIndexes);
   }

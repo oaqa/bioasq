@@ -32,6 +32,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -54,8 +56,9 @@ public class GoPubMedTripleRetrievalExecutor extends JCasAnnotator_ImplBase {
   private QueryStringConstructor bopQueryStringConstructor;
   
   private StringBuilder sb;
-  private Set<String> queryWords;  
-  
+  private Set<String> queryWords;
+
+  private static final Logger LOG = LoggerFactory.getLogger(GoPubMedTripleRetrievalExecutor.class);
   
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -127,7 +130,7 @@ public class GoPubMedTripleRetrievalExecutor extends JCasAnnotator_ImplBase {
     List<TripleSearchResult> triples;
     try {
       triples = BioASQUtil.searchLinkedLifeData(service, jcas, sb.toString(), pages, hits);
-      System.out.println("Retrieved " + triples.size() + " triples.");
+      LOG.info("Retrieved {} triples.", triples.size());
     } catch (IOException e) {
       throw new AnalysisEngineProcessException(e);
     }

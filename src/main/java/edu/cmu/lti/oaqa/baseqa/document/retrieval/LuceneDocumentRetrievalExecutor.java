@@ -38,6 +38,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -80,6 +82,8 @@ public class LuceneDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
 
   private String uriPrefix;
 
+  private static final Logger LOG = LoggerFactory.getLogger(LuceneDocumentRetrievalExecutor.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -111,7 +115,7 @@ public class LuceneDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
     Collection<AbstractQuery> aqueries = TypeUtil.getAbstractQueries(jcas);
     for (AbstractQuery aquery : aqueries) {
       String queryString = constructor.construct(aquery);
-      System.out.println("Query string: " + queryString);
+      LOG.info("Query string: {}", queryString);
       TopDocs results;
       try {
         Query query = parser.parse(queryString);
@@ -121,7 +125,7 @@ public class LuceneDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
       }
       boolean returnsNotEmpty = false;
       ScoreDoc[] scoreDocs = results.scoreDocs;
-      System.out.println("Retrieved " + scoreDocs.length + " documents.");
+      LOG.info("Retrieved {} documents.", scoreDocs.length);
       for (int i = 0; i < scoreDocs.length; i++) {
         try {
           convertScoreDocToDocument(jcas, scoreDocs[i], i, queryString).addToIndexes();

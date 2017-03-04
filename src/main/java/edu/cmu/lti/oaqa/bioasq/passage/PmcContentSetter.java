@@ -28,6 +28,8 @@ import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -57,6 +59,8 @@ public class PmcContentSetter extends JCasAnnotator_ImplBase {
 
   private String urlFormat;
 
+  private static final Logger LOG = LoggerFactory.getLogger(PmcContentSetter.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -77,7 +81,7 @@ public class PmcContentSetter extends JCasAnnotator_ImplBase {
       try {
         json = CharStreams.toString(new InputStreamReader(url.openStream()));
       } catch (IOException e) {
-        System.out.println("Error access " + url.toString());
+        LOG.error("Error access {}", url.toString());
         throw new AnalysisEngineProcessException(e);
       }
       if (json.isEmpty()) {
@@ -96,7 +100,7 @@ public class PmcContentSetter extends JCasAnnotator_ImplBase {
               (StringArray) FSCollectionFactory.createStringArray(jcas, sectionLabels));
       count++;
     }
-    System.out.println("total pmc documents with content: " + count);
+    LOG.info("Total pmc documents with content: {}", count);
   }
 
   public static final class PmcDocument {

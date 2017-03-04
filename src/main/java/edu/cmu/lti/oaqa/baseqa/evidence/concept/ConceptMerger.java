@@ -39,6 +39,8 @@ import edu.cmu.lti.oaqa.type.kb.ConceptMention;
 import edu.cmu.lti.oaqa.type.kb.ConceptType;
 import edu.cmu.lti.oaqa.util.TypeFactory;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -69,6 +71,8 @@ public class ConceptMerger extends JCasAnnotator_ImplBase {
   private static final String UUID_PREFIX = "__UUID__";
 
   private static CharMatcher alphaNumeric = CharMatcher.JAVA_LETTER_OR_DIGIT;
+
+  private static final Logger LOG = LoggerFactory.getLogger(ConceptMerger.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -139,8 +143,10 @@ public class ConceptMerger extends JCasAnnotator_ImplBase {
               types);
     }).collect(toList());
     mergedConcepts.forEach(Concept::addToIndexes);
-    System.out.println("Merged concepts from " + mergedSizes + " concepts.");
-    mergedConcepts.stream().map(c -> " - " + TypeUtil.toString(c)).forEach(System.out::println);
+    LOG.info("Merged concepts from {} concepts.", mergedSizes);
+    if (LOG.isDebugEnabled()) {
+      mergedConcepts.stream().map(TypeUtil::toString).forEachOrdered(c -> LOG.debug(" - {}", c));
+    }
   }
 
   private static String nameKey(String name) {

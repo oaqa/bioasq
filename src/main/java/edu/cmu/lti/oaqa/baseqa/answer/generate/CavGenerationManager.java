@@ -14,23 +14,24 @@
 
 package edu.cmu.lti.oaqa.baseqa.answer.generate;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-
 import edu.cmu.lti.oaqa.baseqa.answer.generate.generators.CavGenerator;
 import edu.cmu.lti.oaqa.baseqa.util.ProviderCache;
 import edu.cmu.lti.oaqa.baseqa.util.UimaContextHelper;
 import edu.cmu.lti.oaqa.type.answer.CandidateAnswerOccurrence;
 import edu.cmu.lti.oaqa.type.answer.CandidateAnswerVariant;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * A {@link JCasAnnotator_ImplBase} that integrates individual pluggable {@link CavGenerator}s as
@@ -41,6 +42,8 @@ import edu.cmu.lti.oaqa.util.TypeUtil;
 public class CavGenerationManager extends JCasAnnotator_ImplBase {
 
   private List<CavGenerator> generators;
+
+  private static final Logger LOG = LoggerFactory.getLogger(CavGenerationManager.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -59,8 +62,8 @@ public class CavGenerationManager extends JCasAnnotator_ImplBase {
                 .forEach(CandidateAnswerOccurrence::addToIndexes);
         List<Collection<String>> names = cavs.stream().map(TypeUtil::getCandidateAnswerVariantNames)
                 .collect(toList());
-        System.out.println("Answer candidates generated: " + names + " from "
-                + generator.getClass().getSimpleName());
+        LOG.info("Answer candidates generated {} from {}", names,
+                generator.getClass().getSimpleName());
       }
     }
   }

@@ -25,6 +25,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -47,6 +49,8 @@ public class DocumentToPassageConverter extends JCasAnnotator_ImplBase {
   private boolean includeSections;
 
   private boolean onlyForDocumentsMissingSections;
+
+  private static final Logger LOG = LoggerFactory.getLogger(DocumentToPassageConverter.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -82,11 +86,8 @@ public class DocumentToPassageConverter extends JCasAnnotator_ImplBase {
         }
       }
     }
-    System.out.println(
-            "Converted " + documents.size() + " documents to " + passages.size() + " passages.");
+    LOG.info("Converted {} documents to {} passages.", documents.size(), passages.size());
     TypeUtil.rankedSearchResultsByScore(passages, Integer.MAX_VALUE).forEach(Passage::addToIndexes);
-//    passages.stream().map(passage -> " - " + TypeUtil.toString(passage))
-//            .forEachOrdered(System.out::println);
   }
 
   private static List<Passage> segmentSentences(JCas jcas, Document document, String text,

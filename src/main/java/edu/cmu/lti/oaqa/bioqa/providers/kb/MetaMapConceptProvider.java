@@ -25,6 +25,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -82,6 +84,8 @@ public class MetaMapConceptProvider extends ConfigurableProvider implements Conc
   private Transformer transformer;
 
   private Unmarshaller unmarshaller;
+
+  private static final Logger LOG = LoggerFactory.getLogger(MetaMapConceptProvider.class);
 
   public MetaMapConceptProvider() {
   }
@@ -171,19 +175,19 @@ public class MetaMapConceptProvider extends ConfigurableProvider implements Conc
       throw new AnalysisEngineProcessException(e);
     }
     conf.setFileField("UpLoad_File", file.toString());
-    System.out.println("Request ready for " + texts.size() + " inputs.");
+    LOG.info("Request ready for {} inputs.", texts.size());
     String response = conf.handleSubmission();
     file.deleteOnExit();
-    System.out.println("Response received.");
+    LOG.info("Response received.");
     List<String> mmoStrings;
     try {
       mmoStrings = splitResponseByMMO(response);
     } catch (Exception e) {
-      System.out.println("Returned: " + response);
+      LOG.error("Returned: {}", response, e);
       throw new AnalysisEngineProcessException(e);
     }
-    System.out.println("MetaMap concept provider retrieved " + mmoStrings.size() + " MMOs for "
-            + texts.size() + " inputs.");
+    LOG.info("MetaMap concept provider retrieved {} MMOs for {} inputs.", mmoStrings.size(),
+            texts.size());
     return mmoStrings;
   }
 

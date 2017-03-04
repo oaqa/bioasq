@@ -38,6 +38,8 @@ import edu.cmu.lti.oaqa.type.kb.Concept;
 import edu.cmu.lti.oaqa.type.kb.ConceptMention;
 import edu.cmu.lti.oaqa.type.kb.ConceptType;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This {@link PassageConceptRecognizer} uses a {@link ConceptProvider} to annotate the
@@ -60,6 +62,8 @@ public class PassageConceptRecognizer extends JCasAnnotator_ImplBase {
   private Set<String> allowedConceptTypes;
 
   private boolean checkConceptTypes;
+
+  private static final Logger LOG = LoggerFactory.getLogger(PassageConceptRecognizer.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -90,9 +94,11 @@ public class PassageConceptRecognizer extends JCasAnnotator_ImplBase {
     concepts.forEach(Concept::addToIndexes);
     concepts.stream().map(TypeUtil::getConceptMentions).flatMap(Collection::stream)
             .forEach(ConceptMention::addToIndexes);
-    System.out.println("Identified Concepts:" +
-            concepts.stream().map(concept -> TypeUtil.getConceptNames(concept) + ":" +
-                    TypeUtil.getConceptTypeNames(concept)).collect(toList()));
+    if (LOG.isInfoEnabled()) {
+      LOG.info("Identified concepts: ");
+      concepts.forEach(c -> LOG.info(" - {}: {}", TypeUtil.getConceptNames(c),
+              TypeUtil.getConceptTypeNames(c)));
+    }
   }
 
   private static boolean containsAllowedConceptType(Concept concept,

@@ -16,12 +16,7 @@ package edu.cmu.lti.oaqa.baseqa.answer;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -44,6 +39,8 @@ import edu.cmu.lti.oaqa.type.kb.ConceptMention;
 import edu.cmu.lti.oaqa.type.nlp.Token;
 import edu.cmu.lti.oaqa.util.TypeFactory;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An utility class mostly for parse tree related operations.
@@ -53,6 +50,8 @@ import edu.cmu.lti.oaqa.util.TypeUtil;
  * @author <a href="mailto:ziy@cs.cmu.edu">Zi Yang</a> created on 4/15/16
  */
 public class CavUtil {
+
+  private static final Logger LOG = LoggerFactory.getLogger(CavUtil.class);
 
   public static SetMultimap<Token, Token> getHeadTokenMap(Collection<Token> tokens) {
     SetMultimap<Token, Token> head2children = HashMultimap.create();
@@ -122,7 +121,7 @@ public class CavUtil {
   public static CandidateAnswerVariant createCandidateAnswerVariant(JCas jcas, Token token) {
     CandidateAnswerOccurrence cao = TypeFactory.createCandidateAnswerOccurrence(getJCas(token),
             token.getBegin(), token.getEnd());
-    return TypeFactory.createCandidateAnswerVariant(jcas, Arrays.asList(cao));
+    return TypeFactory.createCandidateAnswerVariant(jcas, Collections.singletonList(cao));
   }
 
   private static CandidateAnswerOccurrence createCandidateAnswerOccurrence(JCas jcas,
@@ -157,25 +156,20 @@ public class CavUtil {
 
   private static boolean isConstituentForest(SetMultimap<Token, Token> head2children,
           Collection<Token> coveredTokens, Token token) {
-    if (!coveredTokens.contains(token)) {
-      return false;
-    }
-    return head2children.get(token).stream()
+    return coveredTokens.contains(token) && head2children.get(token).stream()
             .allMatch(child -> isConstituentForest(head2children, coveredTokens, child));
   }
 
   public static boolean isConstituent(JCas jcas, Collection<Token> tokens) {
-    if (!isConstituentForest(jcas, tokens)) {
-      return false;
-    }
-    return 1 == tokens.stream().map(Token::getHead).filter(head -> !tokens.contains(head)).count();
+    return isConstituentForest(jcas, tokens) &&
+            1 == tokens.stream().map(Token::getHead).filter(head -> !tokens.contains(head)).count();
   }
 
   public static List<CandidateAnswerVariant> cleanup(JCas jcas, List<CandidateAnswerVariant> cavs,
           Set<String> filteredStrings) {
     return cavs.stream().map(cav -> {
-      if (TypeUtil.getCandidateAnswerVariantNames(cav).stream().anyMatch(v -> v == null))
-        System.out.println(cav);
+      if (TypeUtil.getCandidateAnswerVariantNames(cav).stream().anyMatch(Objects::isNull))
+        LOG.warn("Found CAVs with null names: {}", cav);
       List<String> names = TypeUtil.getCandidateAnswerVariantNames(cav).stream()
               .filter(v -> !filteredStrings.contains(v.toLowerCase())).collect(toList());
       if (names.isEmpty())

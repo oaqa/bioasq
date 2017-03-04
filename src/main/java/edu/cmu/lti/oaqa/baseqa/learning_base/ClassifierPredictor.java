@@ -27,6 +27,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -68,6 +70,8 @@ public class ClassifierPredictor<T> extends JCasAnnotator_ImplBase {
   private String featureFilename;
 
   private Table<String, String, Double> feat2value;
+
+  private static final Logger LOG = LoggerFactory.getLogger(ClassifierPredictor.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -111,8 +115,11 @@ public class ClassifierPredictor<T> extends JCasAnnotator_ImplBase {
             .collect(toList());
     IntStream.range(0, sorted.size()).forEach(rank -> candidateProvider
             .setScoreRank(sorted.get(rank).getKey(), sorted.get(rank).getValue(), rank));
-    sorted.stream().map(Map.Entry::getKey).limit(10).map(candidateProvider::toString)
-            .forEach(candidate -> System.out.println(" - " + candidate));
+    if (LOG.isInfoEnabled()) {
+      LOG.info("Top scored candidates: ");
+      sorted.stream().map(Map.Entry::getKey).limit(10)
+              .forEachOrdered(c -> LOG.info(" - {}", candidateProvider.toString(c)));
+    }
   }
 
   private void putFeatureValues(String qid, T result, double score,

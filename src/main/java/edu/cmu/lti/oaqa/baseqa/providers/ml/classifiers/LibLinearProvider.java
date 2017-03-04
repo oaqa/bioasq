@@ -21,6 +21,8 @@ import edu.cmu.lti.oaqa.ecd.config.ConfigurableProvider;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +71,8 @@ public class LibLinearProvider extends ConfigurableProvider implements Classifie
   private Model model;
 
   private Parameter parameter;
+
+  private static final Logger LOG = LoggerFactory.getLogger(LibLinearProvider.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -162,8 +166,8 @@ public class LibLinearProvider extends ConfigurableProvider implements Classifie
     assert X.size() == Y.size();
     int dataCount = X.size();
     int featCount = fid2feat.size();
-    System.out.println("Training for " + dataCount + " instances, " + featCount + " features, "
-            + lid2label.size() + " labels.");
+    LOG.info("Training for {} instances, {} features, {} labels.", dataCount, featCount,
+            lid2label.size());
     prob.l = dataCount;
     prob.n = featCount;
     prob.x = X.stream()

@@ -37,6 +37,8 @@ import edu.cmu.lti.oaqa.bioqa.providers.query.PubMedQueryStringConstructor;
 import edu.cmu.lti.oaqa.type.retrieval.AbstractQuery;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link JCasAnnotator_ImplBase} that performs search using a query string, transformed from a
@@ -56,6 +58,9 @@ public class GoPubMedDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
   private int hits;
 
   private QueryStringConstructor queryStringConstructor;
+
+  private static final Logger LOG = LoggerFactory
+          .getLogger(GoPubMedDocumentRetrievalExecutor.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -81,14 +86,13 @@ public class GoPubMedDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
     for (AbstractQuery aquery : aqueries) {
       try {
         String queryString = queryStringConstructor.construct(aquery);
-        System.out.println("  - Question: " + TypeUtil.getQuestion(jcas).getText());
-        System.out.println("  - Search for query: " + queryString);
+        LOG.info("Search for query: {}", queryString);
         BioASQUtil.searchPubMed(service, jcas, queryString, pages, hits).stream()
                 .filter(doc -> !docIds.contains(doc.getDocId())).forEach(doc -> {
           documents.add(doc);
           docIds.add(doc.getDocId());
         });
-        System.out.println("  - Retrieved: " + documents.size());
+        LOG.info("Retrieved: {}", documents.size());
         if (documents.size() > 10) {
           break;
         }

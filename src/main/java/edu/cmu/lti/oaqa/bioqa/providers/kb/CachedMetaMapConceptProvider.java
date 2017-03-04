@@ -21,6 +21,8 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -48,6 +50,8 @@ public class CachedMetaMapConceptProvider extends MetaMapConceptProvider
 
   private HTreeMap<String, String> text2mmo;
 
+  private static final Logger LOG = LoggerFactory.getLogger(CachedMetaMapConceptProvider.class);
+
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
           throws ResourceInitializationException {
@@ -68,7 +72,7 @@ public class CachedMetaMapConceptProvider extends MetaMapConceptProvider
     // find missing indexes and collect texts
     int[] missingIndexes = IntStream.range(0, texts.size())
             .filter(i -> mergedMmoStrings.get(i) == null).toArray();
-    System.out.println(missingIndexes.length + " missing documents.");
+    LOG.info("{} missing documents.", missingIndexes.length);
     if (missingIndexes.length > 0) {
       List<String> missingTexts = Arrays.stream(missingIndexes).mapToObj(texts::get)
               .collect(toList());

@@ -44,6 +44,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -83,6 +85,9 @@ public class LuceneInMemorySentenceRetrievalExecutor extends JCasAnnotator_ImplB
   private QueryParser parser;
 
   private QueryStringConstructor queryStringConstructor;
+
+  private static final Logger LOG = LoggerFactory
+          .getLogger(LuceneInMemorySentenceRetrievalExecutor.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -128,7 +133,7 @@ public class LuceneInMemorySentenceRetrievalExecutor extends JCasAnnotator_ImplB
     try (IndexReader reader = DirectoryReader.open(index)) {
       IndexSearcher searcher = new IndexSearcher(reader);
       String queryString = queryStringConstructor.construct(aquery);
-      System.out.println("  - Search for query: " + queryString);
+      LOG.info("Search for query: {}", queryString);
       Query query = parser.parse(queryString);
       ScoreDoc[] scoreDocs = searcher.search(query, hits).scoreDocs;
       for (ScoreDoc scoreDoc : scoreDocs) {

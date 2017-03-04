@@ -22,6 +22,8 @@ import edu.cmu.lti.oaqa.ecd.config.ConfigurableProvider;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -69,6 +71,8 @@ public class WekaProvider extends ConfigurableProvider implements ClassifierProv
   private String[] options;
 
   private boolean balanceWeight;
+
+  private static final Logger LOG = LoggerFactory.getLogger(WekaProvider.class);
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
@@ -175,7 +179,7 @@ public class WekaProvider extends ConfigurableProvider implements ClassifierProv
         Evaluation eval = new Evaluation(trainingInstances);
         Random rand = new Random();
         eval.crossValidateModel(classifier, trainingInstances, 10, rand);
-        System.out.println(eval.toSummaryString());
+        LOG.debug(eval.toSummaryString());
       } catch (Exception e) {
         throw new AnalysisEngineProcessException(e);
       }

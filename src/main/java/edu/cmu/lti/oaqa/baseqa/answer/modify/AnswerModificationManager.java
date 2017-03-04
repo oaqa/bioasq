@@ -29,6 +29,8 @@ import edu.cmu.lti.oaqa.baseqa.answer.modify.modifiers.AnswerModifier;
 import edu.cmu.lti.oaqa.baseqa.util.ProviderCache;
 import edu.cmu.lti.oaqa.baseqa.util.UimaContextHelper;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link JCasAnnotator_ImplBase} that allows to specify and integrate <tt>handlers</tt> that
@@ -41,6 +43,8 @@ import edu.cmu.lti.oaqa.util.TypeUtil;
 public class AnswerModificationManager extends JCasAnnotator_ImplBase {
 
   private List<AnswerModifier> modifiers;
+
+  private static final Logger LOG = LoggerFactory.getLogger(AnswerModificationManager.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -56,8 +60,7 @@ public class AnswerModificationManager extends JCasAnnotator_ImplBase {
         modifier.modify(jcas);
         List<Collection<String>> names = TypeUtil.getRankedAnswers(jcas).stream()
                 .map(TypeUtil::getCandidateAnswerVariantNames).collect(toList());
-        System.out.println(
-                "Answers modified: " + names + " from " + modifier.getClass().getSimpleName());
+        LOG.info("Answers modified: {} from {}", names, modifier.getClass().getSimpleName());
       }
     }
   }

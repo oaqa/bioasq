@@ -24,6 +24,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Set;
@@ -48,6 +50,8 @@ public class MatchingNameConceptReranker extends JCasAnnotator_ImplBase {
 
   private float bonus;
 
+  private static final Logger LOG = LoggerFactory.getLogger(MatchingNameConceptReranker.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -64,8 +68,10 @@ public class MatchingNameConceptReranker extends JCasAnnotator_ImplBase {
             .filter(result -> getNormalizedNames(result.getConcept()).stream()
                     .anyMatch(normalizedNames::contains)).collect(toSet());
     bonusResults.forEach(result -> result.setScore(result.getScore() + bonus));
-    System.out.println("Results that match names:");
-    bonusResults.forEach(result -> System.out.println(" - " + TypeUtil.toString(result)));
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Results that match names:");
+      bonusResults.forEach(r -> LOG.debug(" - {}", TypeUtil.toString(r)));
+    }
   }
 
   private static Set<String> getNormalizedNames(Concept concept) {

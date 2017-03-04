@@ -31,6 +31,8 @@ import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -67,6 +69,8 @@ import static java.util.stream.Collectors.toList;
  */
 public class YesNoToFactoidQuestionConverter extends JCasAnnotator_ImplBase {
 
+  private static final Logger LOG = LoggerFactory.getLogger(YesNoToFactoidQuestionConverter.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -79,11 +83,11 @@ public class YesNoToFactoidQuestionConverter extends JCasAnnotator_ImplBase {
             .min(Comparator.comparingInt(ConceptMention::getEnd).reversed()
                     .thenComparingInt(ConceptMention::getBegin)).orElse(null);
     if (lastCmention == null) {
-      System.out.println("No last concept mention found.");
+      LOG.info("No last concept mention found.");
       TypeFactory.createLexicalAnswerType(jcas, "null").addToIndexes();
       return;
     }
-    System.out.println("Identified expected answer: " + lastCmention.getCoveredText());
+    LOG.info("Identified expected answer: {}", lastCmention.getCoveredText());
     int begin = lastCmention.getBegin();
     int end = lastCmention.getEnd();
     // add the concept types of the expected answer as answer types
@@ -94,7 +98,7 @@ public class YesNoToFactoidQuestionConverter extends JCasAnnotator_ImplBase {
             .flatMap(Collection::stream).map(ConceptType::getAbbreviation).distinct()
             .map(ctype -> TypeFactory.createLexicalAnswerType(jcas, ctype)).collect(toList());
     ats.forEach(LexicalAnswerType::addToIndexes);
-    System.out.println("Identified answer types: " +
+    LOG.info("Identified answer types: {}",
             ats.stream().map(LexicalAnswerType::getLabel).collect(toList()));
     // add candidate answer variant
     CandidateAnswerOccurrence cao = TypeFactory.createCandidateAnswerOccurrence(jcas, begin, end);
@@ -102,18 +106,18 @@ public class YesNoToFactoidQuestionConverter extends JCasAnnotator_ImplBase {
             .flatMap(Collection::stream).distinct().collect(toList());
     CandidateAnswerVariant cav = TypeFactory.createCandidateAnswerVariant(jcas,
             Collections.singletonList(cao), names);
-    System.out.println("Added CAV: " + names);
+    LOG.info("Added CAV: {}", names);
     cav.addToIndexes();
     // remove last concept mention and its corresponding tokens
     List<ConceptMention> coveredCmentions = Lists
             .newArrayList(lastCmention); // selectCovered doesn't select the current annotation
     JCasUtil.selectCovered(ConceptMention.class, lastCmention).forEach(coveredCmentions::add);
     coveredCmentions.forEach(ConceptMention::removeFromIndexes);
-    System.out.println("Removed concept mentions: " +
+    LOG.info("Removed concept mentions: {}",
             coveredCmentions.stream().map(ConceptMention::getCoveredText).collect(toList()));
     List<Token> coveredTokens = JCasUtil.selectCovered(Token.class, lastCmention);
     coveredTokens.forEach(Token::removeFromIndexes);
-    System.out.println("Removed tokens: " +
+    LOG.info("Removed tokens: {}",
             coveredTokens.stream().map(Token::getCoveredText).collect(toList()));
     // remove concept mentions from concepts
     for (ConceptMention cmention : coveredCmentions) {

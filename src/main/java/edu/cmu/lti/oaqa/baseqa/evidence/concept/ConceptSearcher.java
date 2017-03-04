@@ -39,6 +39,8 @@ import edu.cmu.lti.oaqa.baseqa.util.ProviderCache;
 import edu.cmu.lti.oaqa.baseqa.util.UimaContextHelper;
 import edu.cmu.lti.oaqa.type.kb.Concept;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This {@link JCasAnnotator_ImplBase} assumes an input {@link JCas} contains a collection of
@@ -56,6 +58,8 @@ public class ConceptSearcher extends JCasAnnotator_ImplBase {
   private SynonymExpansionProvider synonymExpanisonProvider;
 
   private static final String NAME_NORMALIZATION = " \\(.*?\\)$| \\[.*?\\]$|\\*|\\^";
+
+  private static final Logger LOG = LoggerFactory.getLogger(ConceptSearcher.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -76,16 +80,14 @@ public class ConceptSearcher extends JCasAnnotator_ImplBase {
     Set<Concept> missingIdConcepts = concepts.stream()
             .filter(concept -> TypeUtil.getConceptIds(concept).isEmpty()).collect(toSet());
     // retrieving IDs
-    System.out.println("Retrieving IDs for " + missingIdConcepts.size() + " concepts.");
+    LOG.info("Retrieving IDs for {} concepts.", missingIdConcepts.size());
     for (Concept concept : missingIdConcepts) {
       Optional<Concept> response = conceptSearchProvider.search(jcas,
               TypeUtil.getConceptPreferredName(concept));
-      if (response.isPresent()) {
-        TypeUtil.mergeConcept(jcas, concept, response.get());
-      }
+      response.ifPresent(c -> TypeUtil.mergeConcept(jcas, concept, c));
     }
     // retrieving synonyms (names)
-    System.out.println("Retrieving synonyms for " + concepts.size() + " concepts.");
+    LOG.info("Retrieving synonyms for {} concepts.", concepts.size());
     Map<String, Concept> id2concept = new HashMap<>();
     for (Concept concept : concepts) {
       TypeUtil.getConceptIds(concept).stream().filter(synonymExpanisonProvider::accept)
@@ -102,7 +104,9 @@ public class ConceptSearcher extends JCasAnnotator_ImplBase {
               .distinct().collect(toList());
       concept.setNames(FSCollectionFactory.createStringList(jcas, names));
     }
-//    concepts.stream().map(c -> " - " + TypeUtil.toString(c)).forEach(System.out::println);
+    if (LOG.isDebugEnabled()) {
+      concepts.stream().map(TypeUtil::toString).forEachOrdered(c -> LOG.debug(" - {}", c));
+    }
   }
   
   @Override

@@ -41,6 +41,8 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -82,6 +84,8 @@ public class LuceneInMemoryConceptReranker extends JCasAnnotator_ImplBase {
 
   private float weight;
 
+  private static final Logger LOG = LoggerFactory.getLogger(LuceneInMemoryConceptReranker.class);
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -113,7 +117,7 @@ public class LuceneInMemoryConceptReranker extends JCasAnnotator_ImplBase {
     }
     AbstractQuery aquery = TypeUtil.getAbstractQueries(jcas).iterator().next();
     String queryString = queryStringConstructor.construct(aquery);
-    System.out.println("Query String: " + queryString);
+    LOG.info("Query string: {}", queryString);
     Map<String, Float> uri2score = new HashMap<>();
     try (IndexReader reader = DirectoryReader.open(index)) {
       IndexSearcher searcher = new IndexSearcher(reader);
@@ -133,9 +137,11 @@ public class LuceneInMemoryConceptReranker extends JCasAnnotator_ImplBase {
       result.setScore(score);
     }
     TypeUtil.rankedSearchResultsByScore(results, limit);
-    System.out.println("Reranked " + uri2score.size() + " concepts.");
-    results.stream().sorted(TypeUtil.SEARCH_RESULT_RANK_COMPARATOR).limit(20)
-            .forEach(result -> System.out.println(" - " + TypeUtil.toString(result)));
+    LOG.info("Reranked {} concepts.", uri2score.size());
+    if (LOG.isDebugEnabled()) {
+      results.stream().sorted(TypeUtil.SEARCH_RESULT_RANK_COMPARATOR).limit(20)
+              .map(TypeUtil::toString).forEachOrdered(s -> LOG.debug(" - {}", s));
+    }
   }
 
   private static Document toLuceneDocument(ConceptSearchResult result) {

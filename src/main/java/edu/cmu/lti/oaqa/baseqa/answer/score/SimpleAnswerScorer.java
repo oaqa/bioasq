@@ -34,6 +34,8 @@ import edu.cmu.lti.oaqa.type.kb.ConceptType;
 import edu.cmu.lti.oaqa.type.nlp.LexicalAnswerType;
 import edu.cmu.lti.oaqa.util.TypeFactory;
 import edu.cmu.lti.oaqa.util.TypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple answer scorer that only considers if the type of each candidate answer matches the
@@ -45,6 +47,8 @@ import edu.cmu.lti.oaqa.util.TypeUtil;
 public class SimpleAnswerScorer extends JCasAnnotator_ImplBase {
 
   private float typeCoerSmoothing;
+
+  private static final Logger LOG = LoggerFactory.getLogger(SimpleAnswerScorer.class);
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -66,12 +70,15 @@ public class SimpleAnswerScorer extends JCasAnnotator_ImplBase {
                       .anyMatch(lats::contains))
               .count();
       double score = (latCoercionCount / (double) caos.size() + typeCoerSmoothing) * caos.size();
-      System.out.println(TypeUtil.getCandidateAnswerVariantNames(cav) + " " + score);
+      LOG.trace("CAV {} score: {}", TypeUtil.getCandidateAnswerVariantNames(cav), score);
       return TypeFactory.createAnswer(jcas, score, Collections.singletonList(cav));
     } ).sorted(TypeUtil.ANSWER_SCORE_COMPARATOR).collect(toList());
     answers.forEach(Answer::addToIndexes);
-    System.out.println("Ranked top 5 answers " + answers.stream().limit(5)
-            .map(TypeUtil::getCandidateAnswerVariantNames).collect(toList()));
+    if (LOG.isInfoEnabled()) {
+      List<List<String>> topAnswers = answers.stream().limit(5)
+              .map(TypeUtil::getCandidateAnswerVariantNames).collect(toList());
+      LOG.info("Ranked top 5 answers {}", topAnswers);
+    }
   }
 
 }
