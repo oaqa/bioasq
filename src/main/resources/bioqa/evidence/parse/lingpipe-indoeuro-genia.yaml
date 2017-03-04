@@ -1,4 +1,4 @@
 class: edu.cmu.lti.oaqa.baseqa.evidence.parse.PassageParser
 
-parser-provider: 'inherit: baseqa.providers.parser.clearnlp-general'
+parser-provider: 'inherit: bioqa.providers.parser.lingpipe-indoeuro-genia'
 view-name-prefix: ptv
