@@ -87,7 +87,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class TmToolConceptProvider extends ConfigurableProvider implements ConceptProvider {
 
-  private static final String URL_PREFIX = "http://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/";
+  private static final String URL_PREFIX = "https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/RESTful/tmTool.cgi/";
 
   protected Set<String> triggers = ImmutableSet.of("tmChem", "DNorm", "tmVar", "GNormPlus");
 

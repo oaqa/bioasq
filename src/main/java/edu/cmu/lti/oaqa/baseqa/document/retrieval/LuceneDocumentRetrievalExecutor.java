@@ -121,6 +121,7 @@ public class LuceneDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
         Query query = parser.parse(queryString);
         results = searcher.search(query, hits);
       } catch (ParseException | IOException e) {
+        LOG.warn("Found exception.", e);
         throw new AnalysisEngineProcessException(e);
       }
       boolean returnsNotEmpty = false;
@@ -130,6 +131,7 @@ public class LuceneDocumentRetrievalExecutor extends JCasAnnotator_ImplBase {
         try {
           convertScoreDocToDocument(jcas, scoreDocs[i], i, queryString).addToIndexes();
         } catch (IOException e) {
+          LOG.warn("Found exception while convering document {}.", i, e);
           throw new AnalysisEngineProcessException(e);
         }
         returnsNotEmpty = true;

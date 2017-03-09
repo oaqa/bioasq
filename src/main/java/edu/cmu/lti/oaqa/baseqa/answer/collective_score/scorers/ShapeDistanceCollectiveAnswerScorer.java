@@ -65,7 +65,7 @@ public class ShapeDistanceCollectiveAnswerScorer extends AbstractScorer<Answer> 
     bdistances = HashBasedTable.create();
     ImmutableSet<Answer> answerSet = ImmutableSet.copyOf(answers);
     SetMultimap<Answer, String> answer2shapes = HashMultimap.create();
-    answers.forEach(answer -> TypeUtil.getCandidateAnswerVariantNames(answer).parallelStream()
+    answers.forEach(answer -> TypeUtil.getCandidateAnswerVariantNames(answer).stream()
             .map(ShapeDistanceCollectiveAnswerScorer::shape)
             .forEach(shape -> answer2shapes.put(answer, shape)));
     for (List<Answer> pair : Sets.cartesianProduct(answerSet, answerSet)) {
