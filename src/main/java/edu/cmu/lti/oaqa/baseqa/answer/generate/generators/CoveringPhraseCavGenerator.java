@@ -53,8 +53,8 @@ public class CoveringPhraseCavGenerator extends ConfigurableProvider implements 
   public List<CandidateAnswerVariant> generate(JCas jcas) throws AnalysisEngineProcessException {
     Set<Token> heads = TypeUtil.getCandidateAnswerVariants(jcas).stream()
             .map(TypeUtil::getCandidateAnswerOccurrences).flatMap(Collection::stream)
-            .map(TypeUtil::getHeadTokenOfAnnotation).collect(toSet());
-    Set<Token> parents = heads.stream().map(Token::getHead).filter(t -> t != null)
+            .map(TypeUtil::getHeadTokenOfAnnotation).filter(Objects::nonNull).collect(toSet());
+    Set<Token> parents = heads.stream().map(Token::getHead).filter(Objects::nonNull)
             .filter(t -> !heads.contains(t)).collect(toSet());
     Map<JCas, List<Token>> view2parents = parents.stream().collect(groupingBy(CavUtil::getJCas));
     return view2parents.entrySet().stream().flatMap(entry -> {
